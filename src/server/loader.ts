@@ -6,13 +6,8 @@ import {
 import { createHash } from 'crypto'
 import Koa from 'koa'
 import _ from 'koa-route'
-import chalk from 'chalk'
+import * as chalkers from '../utils/chalkers'
 
-const bold = chalk.bold
-const success = chalk.hex('#000000').bgGreen
-const info = chalk.hex('#000000').bgBlue
-const error = chalk.hex('#f39c12')
-const warning = chalk.hex('#e74c3c')
 const LOG = console.log
 
 export default class roachPluginLoader {
@@ -69,7 +64,7 @@ export default class roachPluginLoader {
   }
 
   public installNotify(pluginInfo: Required<pluginInfoType>, status?: any) {
-    const bannerStyle = !status ? success : error
+    const bannerStyle = !status ? chalkers.successBg : chalkers.errorBg
     const pickers: (keyof pluginAbstractType)[] = [
       'author',
       'describe',
@@ -77,13 +72,15 @@ export default class roachPluginLoader {
     ]
     LOG(
       bannerStyle(
-        bold(`\n ${pluginInfo.name}@${pluginInfo.version || 'unknown'} `)
+        chalkers.bold(
+          `\n ${pluginInfo.name}@${pluginInfo.version || 'unknown'} `
+        )
       ) +
-        bold(` install ${!status ? 'success' : 'error'}!`) +
+        chalkers.bold(` install ${!status ? 'success' : 'error'}!`) +
         pickers
           .map(
             p =>
-              `\n» ${warning.bold(p.padEnd(10, ' '))} ${
+              `\n» ${chalkers.error.bold(p.padEnd(10, ' '))} ${
                 pluginInfo[p] || 'unkown'
               }`
           )
@@ -98,7 +95,7 @@ export default class roachPluginLoader {
       .map(p => Object.keys(p)[0])
       .includes(pluginFormated.hash)
     if (isInstalled) {
-      return warning(
+      return chalkers.warningBg(
         `${pluginFormated.name}@${
           pluginFormated.version || 'unknown'
         } already installed`

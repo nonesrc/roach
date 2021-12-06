@@ -85,7 +85,10 @@ function getBlankCookie(): Promise<[string, string]> {
 }
 
 // Step 3: Link actived cookie and blank cookie
-async function linkCookies(userName: string, userPwd: string): Promise<string> {
+async function linkCookies(
+  userName: string,
+  userPwd: string
+): Promise<[string, string]> {
   const activedCookie = await getActivedCookie(userName, userPwd)
   const [blankCookie, refreshURL] = await getBlankCookie()
   // Login centre base url
@@ -110,7 +113,7 @@ async function linkCookies(userName: string, userPwd: string): Promise<string> {
                       ___res.statusCode === 302 &&
                       ___res.headers['location'] === '/Jxgl/Xs/MainMenu.asp'
                     ) {
-                      resolve(blankCookie)
+                      resolve([activedCookie, blankCookie])
                     } else {
                       reject(
                         'Error at cookie linking(___res): ' +
@@ -137,6 +140,6 @@ async function linkCookies(userName: string, userPwd: string): Promise<string> {
   })
 }
 
-export async function auth(userName: string, userPwd: string) {
+export default async function auth(userName: string, userPwd: string) {
   return await linkCookies(userName, userPwd)
 }
