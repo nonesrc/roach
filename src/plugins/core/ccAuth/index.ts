@@ -9,6 +9,7 @@ const ccAuth: pluginInfoType = {
   author: 'zRain',
   describe: '一个获取计算中心cookie的插件',
   usage: 'POST /ccAuth [userName:string,userPwd]',
+  version:'1.0.0',
   routers: [
     {
       path: '/ccAuth',

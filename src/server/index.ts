@@ -4,16 +4,25 @@ import bodyParser from 'koa-bodyparser'
 import roachPluginLoader from './loader'
 // Plugin
 import ccAuth from '../plugins/core/ccAuth'
+import markList from '../plugins/ext/healthMark'
 // chalk
-import chalk from 'chalk'
+import * as chalker from '../utils/chalkers'
 
 const app = new Koa()
 app.use(bodyParser())
 const pluginLoader = roachPluginLoader.getInstance(app)
 pluginLoader.installer(ccAuth)
+pluginLoader.installer(markList)
 
 app.listen(8800, () => {
   console.log(
-    `${chalk.hex('#000000').bgGreen(' Roach ')} crawling on http://localhost:8800`
+    `${
+      chalker.successBg(' Roach ') +
+      chalker.infoBg(
+        ' ' +
+          chalker.bold(pluginLoader.pluginloadedInfo.length) +
+          ' plugin(s) loaded! '
+      )
+    } crawling on http://localhost:8800`
   )
 })
