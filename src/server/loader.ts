@@ -83,7 +83,9 @@ export default class roachPluginLoader {
         pickers
           .map(
             p =>
-              `\n» ${warning.bold(p.padEnd(10, ' '))} ${pluginInfo[p] || 'unkown'}`
+              `\n» ${warning.bold(p.padEnd(10, ' '))} ${
+                pluginInfo[p] || 'unkown'
+              }`
           )
           .join('') +
         '\n'
@@ -122,13 +124,12 @@ export default class roachPluginLoader {
           },
         })
         // Notify
-        !isInstalled && this.installNotify(pluginFormated)
+        this.installNotify(pluginFormated)
       } catch (error) {
-        !isInstalled &&
-          this.installNotify(
-            pluginFormated,
-            String.prototype.toString.call(error)
-          )
+        this.installNotify(
+          pluginFormated,
+          String.prototype.toString.call(error)
+        )
       }
     }
   }
