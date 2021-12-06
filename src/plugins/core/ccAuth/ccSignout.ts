@@ -10,7 +10,6 @@ export default function ccSignout(
     'http://login.cuit.edu.cn/Login/Logout.asp?from=http%3A%2F%2Fjszx%2Ecuit%2Eedu%2Ecn'
   return new Promise(function (resolve) {
     get(userPubURL, { headers: { Cookie: blankCookie } }, function (res) {
-      console.log('第一次', res.statusCode)
       if (res.statusCode === 200) {
         get(
           unlinkCookieURL,
