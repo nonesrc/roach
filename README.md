@@ -17,4 +17,8 @@
     ·
     <a href="#">Request Feature</a>
   </p>
+  <a href="https://github.com/nonesrc/roach/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/nonesrc/roach?style=for-the-badge"></a>
+  <a href="https://github.com/nonesrc/roach/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/nonesrc/roach?style=for-the-badge"></a>
+  <a href="https://github.com/nonesrc/roach/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/nonesrc/roach?style=for-the-badge"></a>
 </div>
+
