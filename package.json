@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^16.11.11",
+    "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.10",
     "iconv-lite": "^0.6.3",
     "koa": "^2.13.4",
@@ -27,6 +28,12 @@
   "devDependencies": {
     "@types/koa": "^2.13.4",
     "@types/koa-bodyparser": "^4.3.4",
-    "@types/koa-route": "^3.2.5"
+    "@types/koa-route": "^3.2.5",
+    "git-cz": "^4.8.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/git-cz"
+    }
   }
 }

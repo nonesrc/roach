@@ -1,36 +1,141 @@
-import { pluginBaseType } from '../types/plugin'
+import {
+  pluginInfoType,
+  pluginRouterType,
+  pluginAbstractType,
+} from '../types/plugin'
+import { createHash } from 'crypto'
+import Koa from 'koa'
 import _ from 'koa-route'
+import chalk from 'chalk'
 
-export default function roachPluginLoader(
-  app: any,
-  plugins: pluginBaseType[][] = []
-) {
-  const pluginCollections: pluginBaseType[][] = plugins
-  const pluginFormat = function (
-    pluginRouter: pluginBaseType
-  ): Required<pluginBaseType> {
+const bold = chalk.bold
+const success = chalk.hex('#000000').bgGreen
+const info = chalk.hex('#000000').bgBlue
+const error = chalk.hex('#f39c12')
+const warning = chalk.hex('#e74c3c')
+const LOG = console.log
+
+export default class roachPluginLoader {
+  private static instance: roachPluginLoader
+  private app: Koa
+  private plugins: pluginInfoType[]
+  private pluginloadedInfo: Record<string, Required<pluginAbstractType>>[]
+  constructor(app: Koa, plugins: pluginInfoType[] = []) {
+    this.app = app
+    this.plugins = plugins
+    this.pluginloadedInfo = []
+    console.clear()
+    for (const plugin of plugins) this.installer(plugin)
+  }
+  // Generate plugin hash and decorate it
+  public pluginInfoBuilder(plugin: pluginInfoType): Required<pluginInfoType> {
+    const {
+      name,
+      describe = '',
+      usage = '',
+      author = '',
+      version = '',
+      routers,
+    } = plugin
+    const routerBuilder = function (
+      routers: pluginRouterType[]
+    ): Required<pluginRouterType>[] {
+      return routers.map(r => ({
+        path: r.path,
+        dispatch: r.dispatch,
+        method: r.method || 'get',
+        type: r.type || 'application/json',
+        callback: r.callback || function () {},
+      }))
+    }
+    const hashConstructStr = [
+      name,
+      describe,
+      usage,
+      author,
+      version,
+      new Date().getMilliseconds(),
+    ].join('')
+    const hash = createHash('md5').update(hashConstructStr).digest('hex')
     return {
-      path: pluginRouter.path,
-      dispatch: pluginRouter.dispatch,
-      method: pluginRouter.method || 'get',
-      type: pluginRouter.type || 'application/json',
-      callback: pluginRouter.callback || function () {},
+      name,
+      describe,
+      usage,
+      author,
+      version,
+      hash,
+      routers: routerBuilder(routers),
     }
   }
-  const installer = function (plugin: pluginBaseType[]) {
-    for (const router of plugin) {
-      const pluginFormated = pluginFormat(router)
-      app.use(
-        _[pluginFormated.method](pluginFormated.path, async ctx => {
-          await pluginFormated.dispatch(ctx)
-          pluginFormated.callback()
-          ctx.response.type = pluginFormated.type
-        })
+
+  public installNotify(pluginInfo: Required<pluginInfoType>, status?: any) {
+    const bannerStyle = !status ? success : error
+    const pickers: (keyof pluginAbstractType)[] = [
+      'author',
+      'describe',
+      'usage',
+    ]
+    LOG(
+      bannerStyle(
+        bold(`\n ${pluginInfo.name}@${pluginInfo.version || 'unknown'} `)
+      ) +
+        bold(` install ${!status ? 'success' : 'error'}!`) +
+        pickers
+          .map(
+            p =>
+              `\n» ${warning.bold(p.padEnd(10, ' '))} ${pluginInfo[p] || 'unkown'}`
+          )
+          .join('') +
+        '\n'
+    )
+  }
+  // Plugin installer
+  public installer(plugin: pluginInfoType) {
+    const pluginFormated = this.pluginInfoBuilder(plugin)
+    const isInstalled = this.pluginloadedInfo
+      .map(p => Object.keys(p)[0])
+      .includes(pluginFormated.hash)
+    if (isInstalled) {
+      return warning(
+        `${pluginFormated.name}@${
+          pluginFormated.version || 'unknown'
+        } already installed`
       )
     }
+    for (const router of pluginFormated.routers) {
+      try {
+        this.app.use(
+          _[router.method!](router.path, async ctx => {
+            await router.dispatch(ctx)
+            router.callback!()
+            ctx.response.type = router.type!
+          })
+        )
+        // Plugin record
+        this.pluginloadedInfo.push({
+          [pluginFormated.hash]: {
+            name: pluginFormated.name,
+            describe: pluginFormated.describe,
+            usage: pluginFormated.usage,
+            author: pluginFormated.author,
+            version: pluginFormated.version,
+          },
+        })
+        // Notify
+        !isInstalled && this.installNotify(pluginFormated)
+      } catch (error) {
+        !isInstalled &&
+          this.installNotify(
+            pluginFormated,
+            String.prototype.toString.call(error)
+          )
+      }
+    }
   }
-
-  for (const plugin of pluginCollections) installer(plugin)
-
-  return { pluginFormat, installer }
+  static getInstance(app: Koa, plugins: pluginInfoType[] = []) {
+    if (!this.instance) {
+      this.instance = new roachPluginLoader(app, plugins)
+    }
+    return this.instance
+  }
 }
