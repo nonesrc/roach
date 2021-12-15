@@ -4,7 +4,9 @@ import { createWorker, OEM } from 'tesseract.js'
 import sharp from 'sharp'
 import qs from 'qs'
 
-const worker = createWorker()
+const worker = createWorker({
+  logger: m => console.log(m),
+})
 
 function getCookie(easyCookie: string): Promise<string> {
   return new Promise((resolve, reject) => {
