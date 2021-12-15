@@ -6,6 +6,7 @@ import roachPluginLoader from './loader'
 import ccAuth from '../plugins/core/ccAuth'
 import markList from '../plugins/ext/healthMark'
 import easyAuth from '../plugins/core/easyAuth'
+import ssoAuth from '../plugins/core/ssoAuth'
 // chalk
 import * as chalker from '../utils/chalkers'
 
@@ -15,6 +16,7 @@ const pluginLoader = roachPluginLoader.getInstance(app)
 pluginLoader.installer(ccAuth)
 pluginLoader.installer(markList)
 pluginLoader.installer(easyAuth)
+pluginLoader.installer(ssoAuth)
 app.listen(8800, () => {
   console.log(
     `${

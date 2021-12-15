@@ -3,7 +3,7 @@ import { pluginInfoType } from '../../../types/plugin'
 import { RoachResponseWrapper } from '../../../utils/wrappers'
 import { hasProperties } from '../../../utils/commons'
 
-const markList: pluginInfoType = {
+const easyauth: pluginInfoType = {
   name: 'easyAuth',
   author: 'zRain',
   describe: 'EASY CONNENT登录插件',
@@ -28,4 +28,4 @@ const markList: pluginInfoType = {
   ],
 }
 
-export default markList
+export default easyauth
