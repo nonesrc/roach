@@ -15,8 +15,7 @@ function getTWFID(): Promise<string> {
   })
 }
 
-async function getPswConf(): Promise<[string, string, string]> {
-  const TWFID = await getTWFID()
+async function getPswConf(TWFID: string): Promise<[string, string]> {
   return new Promise((resolve, reject) => {
     const req = get(
       'https://webvpn.cuit.edu.cn/public/psw_config?apiversion=1',
@@ -29,7 +28,6 @@ async function getPswConf(): Promise<[string, string, string]> {
           resolve([
             $('RSA_ENCRYPT_KEY').text() || '',
             $('CSRF_RAND_CODE').text() || '',
-            TWFID,
           ])
         })
       }
@@ -41,7 +39,8 @@ export default async function easyAuth(
   userId: string,
   userPwd: string
 ): Promise<string> {
-  const [publicKey, crsf, cookie] = await getPswConf()
+  const TWFID = await getTWFID()
+  const [publicKey, crsf] = await getPswConf(TWFID)
   return new Promise((resolve, reject) => {
     const RSA = new RSAKey()
     RSA.setPublic(publicKey, '10001')
@@ -53,7 +52,7 @@ export default async function easyAuth(
         path: '/por/login_psw.csp?anti_replay=1&encrypt=1&apiversion=1',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          Cookie: cookie,
+          Cookie: TWFID,
         },
       },
       function (res) {

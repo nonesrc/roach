@@ -9,7 +9,7 @@ const ccAuth: pluginInfoType = {
   author: 'zRain',
   describe: '一个获取计算中心cookie的插件',
   usage: 'POST /ccAuth [userName:string,userPwd]',
-  version:'1.0.0',
+  version: '1.0.0',
   routers: [
     {
       path: '/ccAuth',
@@ -17,9 +17,9 @@ const ccAuth: pluginInfoType = {
       dispatch: async ctx => {
         const resWrapper = new RoachResponseWrapper()
         const userData = ctx.request.body
-        if (hasProperties(userData, ['userName', 'userPwd'], true)) {
+        if (hasProperties(userData, ['userId', 'userPwd'], true)) {
           const [activedCookie, blankCookie] = await ccauth(
-            userData.userName,
+            userData.userId,
             userData.userPwd
           )
           resWrapper.setStatus(true).setData({ activedCookie, blankCookie })

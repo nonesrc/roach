@@ -41,7 +41,7 @@ function getActivedCookie(userName: string, userPwd: string): Promise<string> {
       if (activedCookie && res.statusCode === 302) {
         resolve(activedCookie)
       } else {
-        reject('Failed to get cookie')
+        resolve('')
       }
     })
     httpReq.write(authDataPacker(userName, userPwd))
@@ -75,7 +75,7 @@ function getBlankCookie(): Promise<[string, string]> {
           ) {
             resolve([cookie, refreshURL])
           } else {
-            reject('Failed to get blank cookie or refresh URL')
+            resolve(['', ''])
           }
         })
       }
@@ -85,11 +85,11 @@ function getBlankCookie(): Promise<[string, string]> {
 }
 
 // Step 3: Link actived cookie and blank cookie
-async function linkCookies(
-  userName: string,
+export default async function ccAuth(
+  userId: string,
   userPwd: string
 ): Promise<[string, string]> {
-  const activedCookie = await getActivedCookie(userName, userPwd)
+  const activedCookie = await getActivedCookie(userId, userPwd)
   const [blankCookie, refreshURL] = await getBlankCookie()
   // Login centre base url
   const loginBaseURL = 'http://jszx-jxpt.cuit.edu.cn/Jxgl/'
@@ -138,8 +138,4 @@ async function linkCookies(
       }
     })
   })
-}
-
-export default async function auth(userName: string, userPwd: string) {
-  return await linkCookies(userName, userPwd)
 }

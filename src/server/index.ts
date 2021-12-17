@@ -7,6 +7,8 @@ import ccAuth from '../plugins/core/ccAuth'
 import markList from '../plugins/ext/healthMark'
 import easyAuth from '../plugins/core/easyAuth'
 import ssoAuth from '../plugins/core/ssoAuth'
+import eduAuth from '../plugins/core/eduAuth'
+import eduSystem from '../plugins/ext/eduSystem'
 // chalk
 import * as chalker from '../utils/chalkers'
 
@@ -17,6 +19,9 @@ pluginLoader.installer(ccAuth)
 pluginLoader.installer(markList)
 pluginLoader.installer(easyAuth)
 pluginLoader.installer(ssoAuth)
+pluginLoader.installer(eduAuth)
+// pluginLoader.installer(eduSystem)
+
 app.listen(8800, () => {
   console.log(
     `${

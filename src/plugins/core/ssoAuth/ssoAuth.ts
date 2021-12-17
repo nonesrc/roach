@@ -4,9 +4,7 @@ import { createWorker, OEM } from 'tesseract.js'
 import sharp from 'sharp'
 import qs from 'qs'
 
-const worker = createWorker({
-  logger: m => console.log(m),
-})
+const worker = createWorker()
 
 function getCookie(easyCookie: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -143,5 +141,5 @@ export default async function ssoAuth(userId: string, userPwd: string) {
     finalCookie = await tryGetFinallCookie()
     exeCount++
   }
-  return finalCookie
+  return [cookie, finalCookie].join(';')
 }
