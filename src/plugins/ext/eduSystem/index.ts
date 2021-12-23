@@ -1,7 +1,6 @@
 import courseTab from './courseTab'
 import { pluginInfoType } from '../../../types/plugin'
 import { RoachResponseWrapper } from '../../../utils/wrappers'
-import { hasProperties } from '../../../utils/commons'
 
 // Dependent plugins
 import eduAuth from '../../core/eduAuth/eduAuth'
