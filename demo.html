@@ -1,0 +1,582 @@
+<script language="JavaScript">
+  // function CourseTable in TaskActivity.js
+  var language = 'zh'
+  var table0 = new CourseTable(2021, 77)
+  var unitCount = 11
+  var index = 0
+  var activity = null
+  var teachers = [{ id: 2383, name: '杜之波', lab: false }]
+  var actTeachers = [{ id: 2383, name: '杜之波', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4563(CS733A.211010)',
+    'Python程序设计',
+    '23',
+    'H1101',
+    '01111000000000000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 2 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 2 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2383, name: '杜之波', lab: false }]
+  var actTeachers = [{ id: 2383, name: '杜之波', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4563(CS733A.211010)',
+    'Python程序设计',
+    '30',
+    'H1108',
+    '01111000000000000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 0 * unitCount + 2
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 0 * unitCount + 3
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 3025, name: '秦智', lab: false }]
+  var actTeachers = [{ id: 3025, name: '秦智', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4568(CS744A.211003)',
+    '云计算与虚拟化技术',
+    '67',
+    'H2101',
+    '00000000011111000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 4 * unitCount + 2
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 4 * unitCount + 3
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 3025, name: '秦智', lab: false }]
+  var actTeachers = [{ id: 3025, name: '秦智', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4568(CS744A.211003)',
+    '云计算与虚拟化技术',
+    '53',
+    'H1405',
+    '00000000011111000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 2 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 2 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 4359, name: '吴震', lab: false }]
+  var actTeachers = [{ id: 4359, name: '吴震', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4565(CS741A.211006)',
+    '软件工程',
+    '24',
+    'H1102',
+    '00000000011111100000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 2 * unitCount + 6
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 2 * unitCount + 7
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 4359, name: '吴震', lab: false }]
+  var actTeachers = [{ id: 4359, name: '吴震', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4565(CS741A.211006)',
+    '软件工程',
+    '24',
+    'H1102',
+    '00000000011111100000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 0 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 0 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2577, name: '陈智勇', lab: false }]
+  var actTeachers = [{ id: 2577, name: '陈智勇', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '3875(MA009A.211050)',
+    '形势与政策4',
+    '77',
+    'H2204',
+    '00000000011110000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 4 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 4 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2937, name: '赵军', lab: false }]
+  var actTeachers = [{ id: 2937, name: '赵军', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4566(CS742A.211003)',
+    'WEB开发高级技术',
+    '140',
+    'H4404',
+    '01111100000000000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 2 * unitCount + 6
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 2 * unitCount + 7
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2937, name: '赵军', lab: false }]
+  var actTeachers = [{ id: 2937, name: '赵军', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4566(CS742A.211003)',
+    'WEB开发高级技术',
+    '140',
+    'H4404',
+    '01111100000000000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 0 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 0 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2952, name: '曾利', lab: false }]
+  var actTeachers = [{ id: 2952, name: '曾利', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '3839(MA004A.211048)',
+    '毛泽东思想和中国特色社会主义理论体系概论1',
+    '114',
+    'H4203',
+    '01111111111111111110000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 3 * unitCount + 2
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 3 * unitCount + 3
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 4752, name: '张和莉', lab: false }]
+  var actTeachers = [{ id: 4752, name: '张和莉', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '3862(SP005A.211011)',
+    '体育5',
+    '309',
+    '乒乓球场1',
+    '00001111111111110000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 1 * unitCount + 4
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 1 * unitCount + 5
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2936, name: '苟智坚', lab: false }]
+  var actTeachers = [{ id: 2936, name: '苟智坚', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4664(CS005A.211010)',
+    '操作系统原理',
+    '111',
+    'H4112',
+    '01111111111110000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 3 * unitCount + 6
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 3 * unitCount + 7
+  table0.activities[index][table0.activities[index].length] = activity
+  var teachers = [{ id: 2936, name: '苟智坚', lab: false }]
+  var actTeachers = [{ id: 2936, name: '苟智坚', lab: false }]
+  var assistant = _.filter(actTeachers, function (actTeacher) {
+    return (
+      _.where(teachers, {
+        id: actTeacher.id,
+        name: actTeacher.name,
+        lab: actTeacher.lab,
+      }).length == 0 && actTeacher.lab == true
+    )
+  })
+  var assistantName = ''
+  if (assistant.length > 0) {
+    assistantName = assistant[0].name
+    actTeachers = _.reject(actTeachers, function (actTeacher) {
+      return _.where(assistant, { id: actTeacher.id }).length > 0
+    })
+  }
+  var actTeacherId = []
+  var actTeacherName = []
+  for (var i = 0; i < actTeachers.length; i++) {
+    actTeacherId.push(actTeachers[i].id)
+    actTeacherName.push(actTeachers[i].name)
+  }
+  activity = new TaskActivity(
+    actTeacherId.join(','),
+    actTeacherName.join(','),
+    '4664(CS005A.211010)',
+    '操作系统原理',
+    '111',
+    'H4112',
+    '01111111111110000000000000000000000000000000000000000',
+    null,
+    null,
+    assistantName,
+    '',
+    '',
+    '',
+    ''
+  )
+  index = 0 * unitCount + 0
+  table0.activities[index][table0.activities[index].length] = activity
+  index = 0 * unitCount + 1
+  table0.activities[index][table0.activities[index].length] = activity
+  table0.marshalTable(2, 1, 20)
+  fillTable(table0, 7, 11, 0)
+</script>

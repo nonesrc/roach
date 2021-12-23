@@ -20,7 +20,7 @@ pluginLoader.installer(markList)
 pluginLoader.installer(easyAuth)
 pluginLoader.installer(ssoAuth)
 pluginLoader.installer(eduAuth)
-// pluginLoader.installer(eduSystem)
+pluginLoader.installer(eduSystem)
 
 app.listen(8800, () => {
   console.log(
