@@ -2,9 +2,9 @@
   "name": "roach",
   "version": "1.0.0",
   "description": "CUIT APIS collections",
-  "main": "src/server/index.ts",
+  "main": "roach.ts",
   "scripts": {
-    "dev": "nodemon src/server/index.ts",
+    "dev": "nodemon roach.ts",
     "build": "tsc"
   },
   "keywords": [
@@ -18,20 +18,9 @@
     "@types/node": "^16.11.11",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.10",
-    "iconv-lite": "^0.6.3",
-    "koa": "^2.13.4",
-    "koa-bodyparser": "^4.3.0",
-    "koa-route": "^3.2.0",
-    "koa-static": "^5.0.0",
-    "qs": "^6.10.1",
-    "sharp": "^0.29.3",
-    "tesseract.js": "^2.1.5"
+    "iconv-lite": "^0.6.3"
   },
   "devDependencies": {
-    "@types/koa": "^2.13.4",
-    "@types/koa-bodyparser": "^4.3.4",
-    "@types/koa-route": "^3.2.5",
-    "@types/sharp": "^0.29.4",
     "git-cz": "^4.8.0"
   },
   "config": {
