@@ -2,9 +2,14 @@ import { RoachServer } from './server'
 
 import RoachConfig from './config'
 import chalker from './utils/chalker'
+// RoachRouter Middleware
+import cookieParser from './router/middleware/cookieParser'
 
 const roachServer = new RoachServer()
-roachServer.roachRouter.get('/hello', (req, res) => {
+
+roachServer.roachRouter.use(cookieParser)
+roachServer.roachRouter.get('/hello/:name/:age', (req, res) => {
+  console.log(req.params)
   res.json({
     text: 'hello this from router: /hello!',
   })

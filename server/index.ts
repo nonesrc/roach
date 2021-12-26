@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse, Server } from 'http'
-import { RoachRequest, RoachResponse } from '../types/routerTypes'
+import { RoachRequest, RoachResponse } from '../types/serverTypes'
 // RoachRouter
 import RoachRouter from '../router'
 // Config
