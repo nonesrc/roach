@@ -1,6 +1,6 @@
 import {
   RoachRouterOptions,
-  routerHandlerType,
+  RouterHandlerType,
   RoachReqMethods,
 } from '../types/routerTypes'
 import { RoachRequest, RoachResponse } from '../types/serverTypes'
@@ -18,12 +18,12 @@ const defaultOptions: RoachRouterOptions = {
 }
 
 class HandlerStack {
-  private stack: Record<HandlerStackType, routerHandlerType[]>
+  private stack: Record<HandlerStackType, RouterHandlerType[]>
 
   constructor(
-    priorStack?: routerHandlerType[],
-    centerStack?: routerHandlerType[],
-    finalStack?: routerHandlerType[]
+    priorStack?: RouterHandlerType[],
+    centerStack?: RouterHandlerType[],
+    finalStack?: RouterHandlerType[]
   ) {
     this.stack = {
       PR: priorStack || [],
@@ -32,7 +32,7 @@ class HandlerStack {
     }
   }
   public addHandler(
-    handle: routerHandlerType | routerHandlerType[],
+    handle: RouterHandlerType | RouterHandlerType[],
     stackType: HandlerStackType
   ) {
     if (Array.isArray(handle)) {
@@ -98,11 +98,11 @@ export default class RoachRouter {
     }
     next()
   }
-  public use(handle: routerHandlerType): void
-  public use(path: string, handle: routerHandlerType): void
+  public use(handle: RouterHandlerType): void
+  public use(path: string, handle: RouterHandlerType): void
   public use(
-    access: routerHandlerType | string,
-    useHandle?: routerHandlerType
+    access: RouterHandlerType | string,
+    useHandle?: RouterHandlerType
   ): void {
     if (typeof access === 'string' && useHandle) {
       const regex = pathToRegex(access)
@@ -117,7 +117,7 @@ export default class RoachRouter {
         }
       }, 'PR')
     } else {
-      this.handlerStack.addHandler(access as routerHandlerType, 'PR')
+      this.handlerStack.addHandler(access as RouterHandlerType, 'PR')
     }
   }
   public static getInstance(options: RoachRouterOptions = defaultOptions) {

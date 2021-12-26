@@ -7,7 +7,9 @@ import cookieParser from './router/middleware/cookieParser'
 
 const roachServer = new RoachServer()
 
+// Install roachRouter middlewares
 roachServer.roachRouter.use(cookieParser)
+// Registe Routers
 roachServer.roachRouter.get('/hello/:name/:age', (req, res) => {
   console.log(req.params)
   res.json({
