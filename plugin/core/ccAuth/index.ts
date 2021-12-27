@@ -2,7 +2,7 @@ import ccauth from './ccAuth'
 import ccsignout from './ccSignout'
 import { Plugin } from '../../../types/pluginTypes'
 import { hasProperties } from '../../../utils/helper'
-import { RoachRes } from '../../../router/wrapper'
+import { RoachRes } from '../../../router/resWrapper'
 
 const ccAuth: Plugin = {
   name: 'ccAuth',
@@ -29,7 +29,7 @@ const ccAuth: Plugin = {
             .setStatus(false)
             .setMsg('Require only 2 post params: userName userPwd!')
         }
-        Promise.resolve(resWrapper.res(response))
+        Promise.resolve(resWrapper.json(response))
       },
     },
     {
@@ -47,7 +47,7 @@ const ccAuth: Plugin = {
             .setStatus(false)
             .setMsg('Require only 2 post params: activedCookie blankCookie!')
         }
-        Promise.resolve(resWrapper.res(response))
+        Promise.resolve(resWrapper.json(response))
       },
     },
   ],

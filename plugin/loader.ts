@@ -28,16 +28,26 @@ export default class PluginLoder {
       ...this.pluginParser.extraPlugins,
     ])
     perLoadPlugin.forEach((plugin, name) => {
+      // Implements onCreate hook
+      plugin.onCreate && plugin.onCreate()
       for (const handler of plugin.handlers) {
         try {
           this.pluginHandlerChenker(handler)
         } catch (error) {
           console.log(error)
+          // Implements onError hook
+          plugin.onError && plugin.onError(error as RoachPluginError)
           return
         }
         // Register handler
-        this.roachRouter[handler.method](handler.path, handler.dispatch)
+        try {
+          this.roachRouter[handler.method](handler.path, handler.dispatch)
+        } catch (error) {
+          console.log(error)
+        }
       }
+      // Implements onLoaded hook
+      plugin.onLoaded && plugin.onLoaded()
       console.log(`${name} in install success!`)
     })
   }

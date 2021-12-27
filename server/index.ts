@@ -1,74 +1,26 @@
-import { IncomingMessage, ServerResponse, Server } from 'http'
-import { RoachRequest, RoachResponse } from '../types/serverTypes'
+import { Server } from 'http'
+import { requestWrapper, responseWrapper } from './httpWrapper'
 // RoachRouter
 import RoachRouter from '../router'
-// Config
-import RoachConfig from '../config'
 import PluginLoder from '../plugin/loader'
+import { RoachReqMethods } from '../types/routerTypes'
+import { hashStr } from '../utils/helper'
 
-function requestWrapper(
-  incomingMessage: IncomingMessage,
-  requestBody: Buffer[]
-) {
-  const url = new URL(
-    incomingMessage.url!,
-    `http://${incomingMessage.headers.host}`
-  )
-  Object.defineProperties(incomingMessage, {
-    URL: {
-      value: url,
-    },
-    rawBody: {
-      value: requestBody,
-    },
-    body: {
-      get: () => {
-        const contentType = incomingMessage.headers['content-type']
-        const data = Buffer.concat(requestBody).toString()
-        if (contentType === 'application/x-www-form-urlencoded') {
-          return Object.fromEntries(new URLSearchParams(data).entries())
-        } else if (contentType === 'application/json') {
-          return JSON.parse(data)
-        } else {
-          return {}
-        }
-      },
-    },
-    query: {
-      get: () => {
-        const { searchParams } = url
-        return Object.fromEntries(searchParams.entries())
-      },
-    },
-  })
-  return incomingMessage as RoachRequest
-}
+// RoachServer version
+export const ROACH_VERSION = '1.0.0'
 
-function responseWrapper(serverResponse: ServerResponse) {
-  Object.defineProperties(serverResponse, {
-    redirect: {
-      value: (path: string, callback?: Function) => {
-        serverResponse.statusCode = 302
-        serverResponse.setHeader('Location', path).end(callback)
-      },
-    },
-    status: {
-      value: (status: number) => {
-        serverResponse.statusCode = status
-        return serverResponse
-      },
-    },
-    json: {
-      value: (body: any, callback?: Function) => {
-        const json = JSON.stringify(body)
-        serverResponse.setHeader('Content-Type', RoachConfig.mimes['.json'])
-        serverResponse.setHeader('Content-Length', Buffer.byteLength(json))
-        serverResponse.write(json)
-        serverResponse.end(callback)
-      },
-    },
-  })
-  return serverResponse as RoachResponse
+class RoachCTX {
+  protected server: RoachServer
+  public version: string
+  constructor(server: RoachServer) {
+    this.server = server
+    this.version = ROACH_VERSION
+  }
+
+  public hasRouter(method: RoachReqMethods, path: string) {
+    const routerHash = `${method}@${hashStr(path)}`
+    return this.server.roachRouter.routers.has(routerHash)
+  }
 }
 
 export class RoachServer extends Server {

@@ -25,9 +25,12 @@ export function hasProperties(
   return true
 }
 
-// Get plugin hash
+// hash
+export function hashStr(str: string) {
+  return createHash('md5').update(str).digest('hex')
+}
+
+// Get plugin hash // TODO...
 export function pluginHash<T>(plugin: T & { name: string; version: string }) {
-  return createHash('md5')
-    .update(`${plugin.name}@${plugin.version}`)
-    .digest('hex')
+  return hashStr(`${plugin.name}@${plugin.version}`)
 }

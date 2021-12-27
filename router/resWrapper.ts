@@ -27,7 +27,7 @@ export class RoachRes {
     this.options.data = data
     return this
   }
-  public res(response: RoachResponse) {
+  public json(response: RoachResponse) {
     response.json(this.options)
   }
 }

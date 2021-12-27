@@ -1,10 +1,11 @@
+import { RoachPluginError } from '../public/errorHandle'
 import {
   RoachRouterOptions,
   RouterHandlerType,
   RoachReqMethods,
 } from '../types/routerTypes'
 import { RoachRequest, RoachResponse } from '../types/serverTypes'
-import { pathToRegex } from '../utils/helper'
+import { hashStr, pathToRegex } from '../utils/helper'
 
 declare type RouterImplementation = (
   path: string,
@@ -61,6 +62,7 @@ export default class RoachRouter {
   private static instance: RoachRouter
   private options: RoachRouterOptions
   private handlerStack: HandlerStack
+  private routerCollections: Set<string>
   public get!: RouterImplementation
   public post!: RouterImplementation
   public put!: RouterImplementation
@@ -69,6 +71,7 @@ export default class RoachRouter {
   constructor(options: RoachRouterOptions) {
     this.options = options
     this.handlerStack = new HandlerStack()
+    this.routerCollections = new Set()
     roachReqMethods.forEach(method => {
       Object.defineProperty(this, method, {
         value: (
@@ -76,6 +79,11 @@ export default class RoachRouter {
           handle: (requset: RoachRequest, response: RoachResponse) => void
         ) => {
           const regex = pathToRegex(path, options.strict)
+          // Duplicate router handle
+          const routerHash = `${method}@${hashStr(path)}`
+          // if (!this.routerCollections.has(routerHash)) {
+          //   throw new RoachPluginError(`Duplicate router: ${method} ~> ${path}`)
+          // }
           this.handlerStack.addHandler(function (requset, response, next) {
             let { pathname } = requset.URL
             let match = regex.exec(pathname)
@@ -86,6 +94,7 @@ export default class RoachRouter {
               next()
             }
           }, 'CE')
+          this.routerCollections.add(routerHash)
         },
       })
     })
@@ -122,6 +131,10 @@ export default class RoachRouter {
     } else {
       this.handlerStack.addHandler(access as RouterHandlerType, 'PR')
     }
+  }
+
+  public get routers() {
+    return this.routerCollections
   }
   public static getInstance(options: RoachRouterOptions = defaultOptions) {
     if (!RoachRouter.instance) {
