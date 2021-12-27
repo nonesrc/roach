@@ -10,10 +10,11 @@ const ccAuth: Plugin = {
   describe: '一个获取计算中心cookie的插件',
   usage: 'POST /ccAuth [userName:string,userPwd]',
   version: '1.0.0',
+  type: 'core',
   handlers: [
     {
-      path: 'ccAuth',
-      method: 'POST',
+      path: '/ccAuth',
+      method: 'post',
       dispatch: async (request, response) => {
         const resWrapper = new RoachRes()
         const userData = request.body
@@ -32,8 +33,8 @@ const ccAuth: Plugin = {
       },
     },
     {
-      path: 'ccAuth/signout',
-      method: 'POST',
+      path: '/ccAuth/signout',
+      method: 'post',
       dispatch: async (request, response) => {
         const resWrapper = new RoachRes()
         const userData = request.body

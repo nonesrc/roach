@@ -1,18 +1,20 @@
 import { RoachRequest, RoachResponse } from './serverTypes'
 import { RoachReqMethods } from './routerTypes'
+import { RoachPluginError } from '../public/errorHandle'
+
+export interface PluginHook {
+  onCreate?: (e?: RoachPluginError) => void
+  onError?: (e?: RoachPluginError) => void
+  onLoaded?: (e?: RoachPluginError) => void
+}
 
 export interface PluginHandler {
   path: string
   dispatch: (request: RoachRequest, response: RoachResponse) => Promise<void>
   method: RoachReqMethods
-  onCreate?: Function
-  onLoaded?: Function
-  onError?: Function
-  onSuccess?: Function
-  dependencies?: { [name: string]: string }
 }
 
-export type PluginInfo = {
+export interface PluginInfo extends PluginHook {
   name: string
   author: string
   version: string
@@ -20,6 +22,7 @@ export type PluginInfo = {
   describe?: string
   usage?: string
   type?: 'core' | 'extra'
+  dependencies?: { [name: string]: string }
 }
 
 export interface Plugin extends PluginInfo {

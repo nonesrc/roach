@@ -1,6 +1,6 @@
-import { routerHandlerType } from '../../types/routerTypes'
+import { RouterHandlerType } from '../../types/routerTypes'
 
-const cookieParser: routerHandlerType = (request, response, next) => {
+const cookieParser: RouterHandlerType = (request, response, next) => {
   const cookie = request.headers['cookie'] || ''
   request.cookie = Object.fromEntries(
     new URLSearchParams(

@@ -4,6 +4,7 @@ import { RoachRequest, RoachResponse } from '../types/serverTypes'
 import RoachRouter from '../router'
 // Config
 import RoachConfig from '../config'
+import PluginLoder from '../plugin/loader'
 
 function requestWrapper(
   incomingMessage: IncomingMessage,
@@ -72,6 +73,7 @@ function responseWrapper(serverResponse: ServerResponse) {
 
 export class RoachServer extends Server {
   public roachRouter: RoachRouter
+  public roachPluginLoder: PluginLoder
   constructor() {
     const roachRouter = RoachRouter.getInstance()
     super(async (request, response) => {
@@ -85,5 +87,6 @@ export class RoachServer extends Server {
       )
     })
     this.roachRouter = roachRouter
+    this.roachPluginLoder = new PluginLoder(roachRouter)
   }
 }

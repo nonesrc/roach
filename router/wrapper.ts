@@ -28,7 +28,6 @@ export class RoachRes {
     return this
   }
   public res(response: RoachResponse) {
-    response.write(this.options)
-    response.end()
+    response.json(this.options)
   }
 }

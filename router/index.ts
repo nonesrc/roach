@@ -12,7 +12,7 @@ declare type RouterImplementation = (
 ) => void
 declare type HandlerStackType = 'PR' | 'CE' | 'FI'
 
-const roachReqMethods: RoachReqMethods[] = ['GET', 'POST', 'PUT', 'DELETE']
+const roachReqMethods: RoachReqMethods[] = ['get', 'post', 'put', 'delete']
 const defaultOptions: RoachRouterOptions = {
   strict: false,
 }
@@ -70,13 +70,16 @@ export default class RoachRouter {
     this.options = options
     this.handlerStack = new HandlerStack()
     roachReqMethods.forEach(method => {
-      Object.defineProperty(this, method.toLowerCase(), {
-        value: (path: string, handle: (...arg: any) => void) => {
+      Object.defineProperty(this, method, {
+        value: (
+          path: string,
+          handle: (requset: RoachRequest, response: RoachResponse) => void
+        ) => {
           const regex = pathToRegex(path, options.strict)
           this.handlerStack.addHandler(function (requset, response, next) {
             let { pathname } = requset.URL
             let match = regex.exec(pathname)
-            if (match && requset.method!.toUpperCase() === method) {
+            if (match && requset.method!.toLowerCase() === method) {
               requset.params = Object.assign({}, requset.params, match.groups)
               handle(requset, response)
             } else {

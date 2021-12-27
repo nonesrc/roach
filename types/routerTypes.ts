@@ -1,6 +1,6 @@
 import { RoachRequest, RoachResponse } from './serverTypes'
 
-export type RoachReqMethods = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type RoachReqMethods = 'get' | 'post' | 'put' | 'delete'
 
 export type RoachRouterOptions = {
   strict: boolean
