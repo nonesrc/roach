@@ -62,7 +62,7 @@ export default class RoachRouter {
   private static instance: RoachRouter
   private options: RoachRouterOptions
   private handlerStack: HandlerStack
-  private routerCollections: Set<string>
+  private routerCollections: Map<string, string>
   public get!: RouterImplementation
   public post!: RouterImplementation
   public put!: RouterImplementation
@@ -71,7 +71,7 @@ export default class RoachRouter {
   constructor(options: RoachRouterOptions) {
     this.options = options
     this.handlerStack = new HandlerStack()
-    this.routerCollections = new Set()
+    this.routerCollections = new Map()
     roachReqMethods.forEach(method => {
       Object.defineProperty(this, method, {
         value: (
@@ -94,7 +94,7 @@ export default class RoachRouter {
               next()
             }
           }, 'CE')
-          this.routerCollections.add(routerHash)
+          this.routerCollections.set(routerHash, `${method}@${path}`)
         },
       })
     })
