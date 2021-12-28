@@ -1,6 +1,8 @@
+import ServerCTX from '../public/ctx'
 import { RoachPluginError } from '../public/errorHandle'
 import RoachRouter from '../router'
-import { Plugin, PluginHandler } from '../types/pluginTypes'
+import { RoachServer } from '../server'
+import { Plugin, PluginHandler, PluginInfo } from '../types/pluginTypes'
 import PluginParser from './parser'
 
 const handlerRules = {
@@ -11,16 +13,24 @@ const handlerRules = {
 }
 
 export default class PluginLoder {
-  private pluginParser: PluginParser
   private roachRouter: RoachRouter
-  public pluginLoaded: string[]
+  private pluginParser: PluginParser
+  private pluginLoaded: Map<string, PluginInfo>
+  private serverCTX: ServerCTX
   constructor(router: RoachRouter) {
     this.roachRouter = router
     this.pluginParser = new PluginParser()
-    this.pluginLoaded = []
+    this.pluginLoaded = new Map()
+    this.serverCTX = new ServerCTX(this, router)
   }
   public install(...plugin: Plugin[]) {
-    plugin.map(p => this.pluginParser.compose(p))
+    plugin.forEach(p => {
+      if (!this.pluginLoaded.has(p.name)) {
+        this.pluginParser.compose(p)
+      } else {
+        console.log(`Plugin ${p.name} already installed!`)
+      }
+    })
   }
   public process() {
     const perLoadPlugin = new Map([
@@ -29,25 +39,26 @@ export default class PluginLoder {
     ])
     perLoadPlugin.forEach((plugin, name) => {
       // Implements onCreate hook
-      plugin.onCreate && plugin.onCreate()
+      plugin.onCreate && plugin.onCreate(this.serverCTX)
       for (const handler of plugin.handlers) {
         try {
           this.pluginHandlerChenker(handler)
+          // Register handler
+          this.roachRouter[handler.method](handler.path, handler.dispatch)
         } catch (error) {
           console.log(error)
           // Implements onError hook
           plugin.onError && plugin.onError(error as RoachPluginError)
           return
         }
-        // Register handler
-        try {
-          this.roachRouter[handler.method](handler.path, handler.dispatch)
-        } catch (error) {
-          console.log(error)
-        }
       }
+      this.pluginLoaded.set(name, {
+        name: plugin.name,
+        author: plugin.author,
+        version: plugin.version,
+      })
       // Implements onLoaded hook
-      plugin.onLoaded && plugin.onLoaded()
+      plugin.onLoaded && plugin.onLoaded(this.serverCTX)
       console.log(`${name} in install success!`)
     })
   }
@@ -60,5 +71,9 @@ export default class PluginLoder {
         )
       }
     }
+  }
+
+  public get plugins() {
+    return this.pluginLoaded
   }
 }

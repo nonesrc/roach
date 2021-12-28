@@ -1,11 +1,12 @@
 import { RoachRequest, RoachResponse } from './serverTypes'
 import { RoachReqMethods } from './routerTypes'
 import { RoachPluginError } from '../public/errorHandle'
+import serverCTX from '../public/ctx'
 
 export interface PluginHook {
-  onCreate?: (e?: RoachPluginError) => void
-  onError?: (e?: RoachPluginError) => void
-  onLoaded?: (e?: RoachPluginError) => void
+  onCreate?: (ctx: serverCTX) => void
+  onError?: (error: RoachPluginError) => void
+  onLoaded?: (ctx: serverCTX) => void
 }
 
 export interface PluginHandler {
@@ -14,7 +15,7 @@ export interface PluginHandler {
   method: RoachReqMethods
 }
 
-export interface PluginInfo extends PluginHook {
+export interface PluginInfo {
   name: string
   author: string
   version: string
@@ -25,7 +26,7 @@ export interface PluginInfo extends PluginHook {
   dependencies?: { [name: string]: string }
 }
 
-export interface Plugin extends PluginInfo {
+export interface Plugin extends PluginInfo, PluginHook {
   handlers: PluginHandler[]
 }
 
