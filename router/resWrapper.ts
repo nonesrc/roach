@@ -1,9 +1,11 @@
 import { RoachResponseWrapper } from '../types/routerTypes'
 import { RoachResponse } from '../types/serverTypes'
 
-export class RoachRes {
+export default class RoachRes {
   public options: RoachResponseWrapper
-  constructor(options?: RoachResponseWrapper) {
+  private response: RoachResponse
+  constructor(response: RoachResponse, options?: RoachResponseWrapper) {
+    this.response = response
     this.options = options || {
       status: false,
       data: null,
@@ -27,7 +29,7 @@ export class RoachRes {
     this.options.data = data
     return this
   }
-  public json(response: RoachResponse) {
-    response.json(this.options)
+  public json() {
+    this.response.json(this.options)
   }
 }

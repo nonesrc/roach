@@ -18,9 +18,12 @@
     "@types/node": "^16.11.11",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.10",
-    "iconv-lite": "^0.6.3"
+    "iconv-lite": "^0.6.3",
+    "sharp": "^0.29.3",
+    "tesseract.js": "^2.1.5"
   },
   "devDependencies": {
+    "@types/sharp": "^0.29.5",
     "git-cz": "^4.8.0"
   },
   "config": {

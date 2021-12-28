@@ -20,7 +20,7 @@ export default class ServerCTX {
     return this.router.routers.has(routerHash)
   }
   public get routers() {
-    return Array.from(this.router.routers.values())
+    return this.router.routers
   }
   public get plugins() {
     return this.loader.plugins
