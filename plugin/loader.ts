@@ -1,8 +1,9 @@
 import ServerCTX from '../public/ctx'
-import { RoachPluginError } from '../public/errorHandle'
+import RoachError from '../public/errorHandle'
+import Notifier from '../public/notifier'
 import RoachRouter from '../router'
-import { RoachServer } from '../server'
 import { Plugin, PluginHandler, PluginInfo } from '../types/pluginTypes'
+import { getPluginRecord, hashStr } from '../utils/helper'
 import PluginParser from './parser'
 
 const handlerRules = {
@@ -38,6 +39,10 @@ export default class PluginLoder {
       ...this.pluginParser.extraPlugins,
     ])
     perLoadPlugin.forEach((plugin, name) => {
+      new Notifier(
+        'RoachInfo',
+        `${name}@${plugin.version} installing...`
+      ).info()
       // Implements onCreate hook
       plugin.onCreate && plugin.onCreate(this.serverCTX)
       for (const handler of plugin.handlers) {
@@ -45,28 +50,33 @@ export default class PluginLoder {
           this.pluginHandlerChenker(handler)
           // Register handler
           this.roachRouter[handler.method](handler.path, handler.dispatch)
+          // Record router
+          this.roachRouter.routerCollections.set(
+            `${handler.method}@${hashStr(handler.path)}`,
+            getPluginRecord(plugin)
+          )
         } catch (error) {
-          console.log(error)
+          ;(error as RoachError).notify()
           // Implements onError hook
-          plugin.onError && plugin.onError(error as RoachPluginError)
+          plugin.onError && plugin.onError(error as RoachError)
           return
         }
       }
-      this.pluginLoaded.set(name, {
-        name: plugin.name,
-        author: plugin.author,
-        version: plugin.version,
-      })
+      this.pluginLoaded.set(name, getPluginRecord(plugin))
       // Implements onLoaded hook
       plugin.onLoaded && plugin.onLoaded(this.serverCTX)
-      console.log(`${name} in install success!`)
+      new Notifier(
+        'RoachInfo',
+        `${name}@${plugin.version} plugin installed successed!`
+      ).info()
     })
   }
   private pluginHandlerChenker(handler: PluginHandler) {
     for (const [key, rule] of Object.entries(handlerRules)) {
       let currentValue = handler[key as keyof typeof handlerRules]
       if (!rule(currentValue)) {
-        throw new RoachPluginError(
+        throw new RoachError(
+          'RoachError',
           `Handler's ${key} is invalid! Current value: ${currentValue}`
         )
       }

@@ -1,24 +1,15 @@
-class RoachError extends Error {
-  constructor(msg: string) {
-    super(msg)
-    Error.captureStackTrace(this, this.constructor)
-  }
-}
+import Notifier from './notifier'
 
-export class RoachPluginError extends RoachError {
-  constructor(msg: string) {
-    super(msg)
+export default class RoachError extends Error {
+  public errorNotifier: Notifier
+  constructor(perfix: string, body: string)
+  constructor(notifier: Notifier)
+  constructor(access: string | Notifier, body?: string) {
+    super(typeof access === 'string' ? access : access.body)
+    this.errorNotifier =
+      typeof access === 'string' ? new Notifier(access, body!) : access
   }
-}
-
-export class RoachRouterError extends RoachError {
-  constructor(msg: string) {
-    super(msg)
-  }
-}
-
-export class RoachServerError extends RoachError {
-  constructor(msg: string) {
-    super(msg)
+  public notify() {
+    this.errorNotifier.error()
   }
 }

@@ -1,4 +1,6 @@
-import { RoachPluginError } from '../public/errorHandle'
+import RoachError from '../public/errorHandle'
+import Notifier from '../public/notifier'
+import { PluginInfo } from '../types/pluginTypes'
 import {
   RoachRouterOptions,
   RouterHandlerType,
@@ -62,7 +64,7 @@ export default class RoachRouter {
   private static instance: RoachRouter
   private options: RoachRouterOptions
   private handlerStack: HandlerStack
-  private routerCollections: Map<string, string>
+  public routerCollections: Map<string, PluginInfo>
   public get!: RouterImplementation
   public post!: RouterImplementation
   public put!: RouterImplementation
@@ -80,10 +82,12 @@ export default class RoachRouter {
         ) => {
           const regex = pathToRegex(path, options.strict)
           // Duplicate router handle
-          const routerHash = `${method}@${hashStr(path)}`
-          // if (!this.routerCollections.has(routerHash)) {
-          //   throw new RoachPluginError(`Duplicate router: ${method} ~> ${path}`)
-          // }
+          if (this.routerCollections.has(`${method}@${hashStr(path)}`)) {
+            return new Notifier(
+              'RoachError',
+              `duplicate router: ${method} ~> ${path}, this route would not be loaded!`
+            ).error()
+          }
           this.handlerStack.addHandler(function (requset, response, next) {
             let { pathname } = requset.URL
             let match = regex.exec(pathname)
@@ -94,7 +98,10 @@ export default class RoachRouter {
               next()
             }
           }, 'CE')
-          this.routerCollections.set(routerHash, `${method}@${path}`)
+          new Notifier(
+            'RoachInfo',
+            `${method} ~> ${path} load successed!`
+          ).info()
         },
       })
     })
@@ -118,6 +125,15 @@ export default class RoachRouter {
   ): void {
     if (typeof access === 'string' && useHandle) {
       const regex = pathToRegex(access)
+      // Duplicate router handle
+      console.log([...this.routerCollections.keys()])
+
+      if (this.routerCollections.has(hashStr(access))) {
+        return new Notifier(
+          'RoachError',
+          `duplicate router in use: * ~> ${access}, this route would not be loaded!`
+        ).warn()
+      }
       this.handlerStack.addHandler(function (request, response, next) {
         const { pathname } = request.URL
         const match = regex.exec(pathname)
@@ -128,11 +144,15 @@ export default class RoachRouter {
           next()
         }
       }, 'PR')
+      this.routerCollections.set(hashStr(access), {
+        name: '__use__',
+        author: '',
+        version: '',
+      })
     } else {
       this.handlerStack.addHandler(access as RouterHandlerType, 'PR')
     }
   }
-
   public get routers() {
     return this.routerCollections
   }

@@ -1,4 +1,4 @@
-import { RoachPluginError } from '../public/errorHandle'
+import RoachError from '../public/errorHandle'
 import { Plugin, PluginComposed } from '../types/pluginTypes'
 import { pluginHash } from '../utils/helper'
 
@@ -61,7 +61,8 @@ export default class PluginParser {
     Object.entries(pluginRules).forEach(([key, rule]) => {
       let currentValue = plugin[key as keyof typeof pluginRules]
       if (!rule(currentValue)) {
-        throw new RoachPluginError(
+        throw new RoachError(
+          'RoachPluginError',
           `${plugin.name}'s ${key} is invalid! Current value:${currentValue}`
         )
       }

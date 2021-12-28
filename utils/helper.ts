@@ -1,4 +1,5 @@
 import { createHash } from 'crypto'
+import { Plugin, PluginInfo } from '../types/pluginTypes'
 
 export function pathToRegex(path: string, exact = false) {
   return new RegExp(
@@ -23,6 +24,15 @@ export function hasProperties(
     if (!Object.prototype.hasOwnProperty.call(o, _p)) return false
   }
   return true
+}
+
+// Yes, I need plugin records!!
+export function getPluginRecord(plugin: Plugin): PluginInfo {
+  return {
+    name: plugin.name,
+    author: plugin.author,
+    version: plugin.version,
+  }
 }
 
 // hash
