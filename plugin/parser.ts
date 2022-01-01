@@ -20,8 +20,9 @@ const pluginRules = {
   dependencies: (v: any) => {
     if (typeof v === 'object') {
       for (const [name, version] of Object.entries(v)) {
-        if (!pluginRules.name(name) || !pluginRules.version(version))
+        if (!pluginRules.name(name) || !pluginRules.version(version)) {
           return false
+        }
       }
       return true
     } else {
@@ -43,7 +44,7 @@ export default class PluginParser {
     try {
       this.pluginInfoChecker(plugin)
     } catch (error) {
-      console.log(error)
+      ;(error as RoachError).notify()
       return
     }
     plugin.type = plugin.type || 'extra'
@@ -62,8 +63,8 @@ export default class PluginParser {
       let currentValue = plugin[key as keyof typeof pluginRules]
       if (!rule(currentValue)) {
         throw new RoachError(
-          'RoachPluginError',
-          `${plugin.name}'s ${key} is invalid! Current value:${currentValue}`
+          'RoachError',
+          `${plugin.name}'s ${key} is invalid!`
         )
       }
     })
