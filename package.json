@@ -5,7 +5,9 @@
   "main": "roach.ts",
   "scripts": {
     "dev": "nodemon roach.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint **/*.ts",
+    "fix": "eslint **/*.ts --fix"
   },
   "keywords": [
     "CUIT",
@@ -24,7 +26,16 @@
   },
   "devDependencies": {
     "@types/sharp": "^0.30.0",
-    "git-cz": "^4.8.0"
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.1.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "git-cz": "^4.8.0",
+    "prettier": "^2.5.1"
   },
   "config": {
     "commitizen": {

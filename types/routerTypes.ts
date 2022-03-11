@@ -6,11 +6,7 @@ export type RoachRouterOptions = {
   strict: boolean
 }
 
-export type RouterHandlerType = (
-  request: RoachRequest,
-  response: RoachResponse,
-  next: Function
-) => void
+export type RouterHandlerType = (request: RoachRequest, response: RoachResponse, next: Function) => void
 
 export type RoachResHeader = {
   status: boolean

@@ -1,11 +1,11 @@
 import { RoachRequest, RoachResponse } from './serverTypes'
 import { RoachReqMethods } from './routerTypes'
-import { RoachPluginError } from '../public/errorHandle'
+import RoachError from '../public/errorHandle'
 import serverCTX from '../public/ctx'
 
 export interface PluginHook {
   onCreate?: (ctx: serverCTX) => void
-  onError?: (error: RoachPluginError) => void
+  onError?: (error: RoachError) => void
   onLoaded?: (ctx: serverCTX) => void
 }
 

@@ -1,21 +1,15 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { RoachRequest, RoachResponse } from '../types/serverTypes'
+import type { RoachRequest, RoachResponse } from '../types/serverTypes'
 import RoachConfig from '../config'
 
-export function requestWrapper(
-  incomingMessage: IncomingMessage,
-  requestBody: Buffer[]
-) {
-  const url = new URL(
-    incomingMessage.url!,
-    `http://${incomingMessage.headers.host}`
-  )
+export function requestWrapper(incomingMessage: IncomingMessage, requestBody: Buffer[]) {
+  const url = new URL(incomingMessage.url!, `http://${incomingMessage.headers.host}`)
   Object.defineProperties(incomingMessage, {
     URL: {
-      value: url,
+      value: url
     },
     rawBody: {
-      value: requestBody,
+      value: requestBody
     },
     body: {
       get: () => {
@@ -23,19 +17,19 @@ export function requestWrapper(
         const data = Buffer.concat(requestBody).toString()
         if (contentType === 'application/x-www-form-urlencoded') {
           return Object.fromEntries(new URLSearchParams(data).entries())
-        } else if (contentType === 'application/json') {
-          return JSON.parse(data)
-        } else {
-          return {}
         }
-      },
+        if (contentType === 'application/json') {
+          return JSON.parse(data)
+        }
+        return {}
+      }
     },
     query: {
       get: () => {
         const { searchParams } = url
         return Object.fromEntries(searchParams.entries())
-      },
-    },
+      }
+    }
   })
   return incomingMessage as RoachRequest
 }
@@ -46,13 +40,13 @@ export function responseWrapper(serverResponse: ServerResponse) {
       value: (path: string, callback?: Function) => {
         serverResponse.statusCode = 302
         serverResponse.setHeader('Location', path).end(callback)
-      },
+      }
     },
     status: {
       value: (status: number) => {
         serverResponse.statusCode = status
         return serverResponse
-      },
+      }
     },
     json: {
       value: (body: any, callback?: Function) => {
@@ -61,8 +55,8 @@ export function responseWrapper(serverResponse: ServerResponse) {
         serverResponse.setHeader('Content-Length', Buffer.byteLength(json))
         serverResponse.write(json)
         serverResponse.end(callback)
-      },
-    },
+      }
+    }
   })
   return serverResponse as RoachResponse
 }

@@ -1,4 +1,4 @@
-import { RoachServer } from './server'
+import RoachServer from './server'
 
 import RoachConfig from './config'
 import chalker from './utils/chalker'
@@ -23,11 +23,10 @@ roachServer.roachPluginLoder.install(ssoAuth)
 roachServer.roachPluginLoder.install(eduSystem)
 roachServer.roachPluginLoder.install(healthMark)
 
-roachServer.listen(RoachConfig.serverPort, function () {
+roachServer.listen(RoachConfig.serverPort, () => {
+  // eslint-disable-next-line
   console.clear()
   roachServer.roachPluginLoder.process()
-  console.log(
-    chalker.success
-      .bold`Roach crawling on http://localhost:${RoachConfig.serverPort} `
-  )
+  // eslint-disable-next-line
+  console.log(chalker.success.bold`Roach crawling on http://localhost:${RoachConfig.serverPort} `)
 })

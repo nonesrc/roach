@@ -1,5 +1,5 @@
 import easyAuth from './easyAuth'
-import { Plugin } from '../../../types/pluginTypes'
+import type { Plugin } from '../../../types/pluginTypes'
 import RoachRes from '../../../router/resWrapper'
 import { hasProperties } from '../../../utils/helper'
 
@@ -24,9 +24,9 @@ const easyauth: Plugin = {
         }
         Promise.resolve(resWrapper.json())
       },
-      method: 'post',
-    },
-  ],
+      method: 'post'
+    }
+  ]
 }
 
 export default easyauth
