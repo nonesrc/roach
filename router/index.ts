@@ -98,10 +98,7 @@ export default class RoachRouter {
               next()
             }
           }, 'CE')
-          new Notifier(
-            'RoachInfo',
-            `${method} ~> ${path} load successed!`
-          ).info()
+          new Notifier('*', `${method} ~> ${path} OK!`).info()
         },
       })
     })

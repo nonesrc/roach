@@ -26,10 +26,16 @@ export default class PluginLoder {
   }
   public install(...plugin: Plugin[]) {
     plugin.forEach(p => {
-      if (!this.pluginLoaded.has(p.name)) {
+      if (
+        !this.pluginParser.corePlugins.has(p.name) &&
+        !this.pluginParser.extraPlugins.has(p.name)
+      ) {
         this.pluginParser.compose(p)
       } else {
-        console.log(`Plugin ${p.name} already installed!`)
+        new Notifier(
+          'RoachWarn',
+          `${p.name}@${p.version} already installed!`
+        ).warn()
       }
     })
   }
@@ -65,10 +71,7 @@ export default class PluginLoder {
       this.pluginLoaded.set(name, getPluginRecord(plugin))
       // Implements onLoaded hook
       plugin.onLoaded && plugin.onLoaded(this.serverCTX)
-      new Notifier(
-        'RoachInfo',
-        `${name}@${plugin.version} plugin installed successed!`
-      ).info()
+      new Notifier('*', `${name}@${plugin.version} is ready!`).success()
     })
   }
   private pluginHandlerChenker(handler: PluginHandler) {

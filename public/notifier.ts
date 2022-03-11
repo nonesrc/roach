@@ -7,6 +7,9 @@ export default class Notifier {
     this.prefix = prefix
     this.body = body
   }
+  public success() {
+    console.log(chalker.success.bold`${this.prefix} ` + this.body)
+  }
   public info() {
     console.log(chalker.info.bold`${this.prefix} ` + this.body)
   }

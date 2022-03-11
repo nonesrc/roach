@@ -10,6 +10,9 @@ const ssoauth: Plugin = {
   usage: 'POST /eduAuth',
   version: '1.0.0',
   type: 'core',
+  dependencies: {
+    easyAuth: '1.0.0',
+  },
   handlers: [
     {
       path: '/eduAuth',
