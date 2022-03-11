@@ -1,38 +1,10 @@
 import RoachError from '../public/errorHandle'
-import { Plugin, PluginComposed } from '../types/pluginTypes'
+import type { Plugin, PluginComposed } from '../types/pluginTypes'
 import { pluginHash } from '../utils/helper'
-
-const strRule = (v: any) =>
-  v ? typeof v === 'string' && Boolean(v.length) : true
-const pluginRules = {
-  name: (v: any) => typeof v === 'string' && /^.{1,10}$/.test(v),
-  // mini version: 1.0.0
-  version: (v: any) =>
-    typeof v === 'string' && /^[1-9]\d?(\.(0|[1-9]\d?)){2}$/.test(v),
-  type: (v: any) => (v ? ['core', 'extra'].includes(v) : true),
-  author: strRule,
-  rootPath: strRule,
-  describe: strRule,
-  usage: strRule,
-  onCreate: (v: any) => (v ? typeof v === 'function' : true),
-  onError: (v: any) => (v ? typeof v === 'function' : true),
-  onLoaded: (v: any) => (v ? typeof v === 'function' : true),
-  dependencies: (v: any) => {
-    if (typeof v === 'object') {
-      for (const [name, version] of Object.entries(v)) {
-        if (!pluginRules.name(name) || !pluginRules.version(version)) {
-          return false
-        }
-      }
-      return true
-    } else {
-      return typeof v === 'undefined'
-    }
-  },
-}
 
 export default class PluginParser {
   public corePlugins: Map<string, PluginComposed>
+
   public extraPlugins: Map<string, PluginComposed>
 
   constructor() {
@@ -42,7 +14,7 @@ export default class PluginParser {
 
   public compose(plugin: Plugin) {
     try {
-      this.pluginInfoChecker(plugin)
+      PluginParser.pluginInfoChecker(plugin)
     } catch (error) {
       ;(error as RoachError).notify()
       return
@@ -50,22 +22,45 @@ export default class PluginParser {
     plugin.type = plugin.type || 'extra'
     plugin.rootPath = plugin.rootPath || plugin.name
     const hash = pluginHash(plugin)
-    const targetMap =
-      plugin.type === 'core' ? this.corePlugins : this.extraPlugins
+    const targetMap = plugin.type === 'core' ? this.corePlugins : this.extraPlugins
+
     targetMap.set(plugin.name, {
       ...plugin,
-      hash,
+      hash
     })
   }
 
-  private pluginInfoChecker(plugin: Plugin) {
+  static pluginInfoChecker(plugin: Plugin) {
+    const strRule = (v: any) => (v ? typeof v === 'string' && Boolean(v.length) : true)
+    const pluginRules = {
+      name: (v: any) => typeof v === 'string' && /^.{1,10}$/.test(v),
+      // mini version: 1.0.0
+      version: (v: any) => typeof v === 'string' && /^[1-9]\d?(\.(0|[1-9]\d?)){2}$/.test(v),
+      type: (v: any) => (v ? ['core', 'extra'].includes(v) : true),
+      author: strRule,
+      rootPath: strRule,
+      describe: strRule,
+      usage: strRule,
+      onCreate: (v: any) => (v ? typeof v === 'function' : true),
+      onError: (v: any) => (v ? typeof v === 'function' : true),
+      onLoaded: (v: any) => (v ? typeof v === 'function' : true),
+      dependencies: (v: any) => {
+        if (typeof v === 'object') {
+          return Object.entries(v).every(([name, version]) => {
+            if (!pluginRules.name(name) || !pluginRules.version(version)) {
+              return false
+            }
+            return true
+          })
+        }
+        return typeof v === 'undefined'
+      }
+    }
+
     Object.entries(pluginRules).forEach(([key, rule]) => {
-      let currentValue = plugin[key as keyof typeof pluginRules]
+      const currentValue = plugin[key as keyof typeof pluginRules]
       if (!rule(currentValue)) {
-        throw new RoachError(
-          'RoachError',
-          `${plugin.name}'s ${key} is invalid!`
-        )
+        throw new RoachError('RoachError', `${plugin.name}'s ${key} is invalid!`)
       }
     })
   }

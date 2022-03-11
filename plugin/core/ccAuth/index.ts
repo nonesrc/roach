@@ -1,6 +1,6 @@
 import ccauth from './ccAuth'
 import ccsignout from './ccSignout'
-import { Plugin } from '../../../types/pluginTypes'
+import type { Plugin } from '../../../types/pluginTypes'
 import { hasProperties } from '../../../utils/helper'
 import RoachRes from '../../../router/resWrapper'
 
@@ -19,18 +19,13 @@ const ccAuth: Plugin = {
         const resWrapper = new RoachRes(response)
         const userData = request.body
         if (hasProperties(userData, ['userId', 'userPwd'], true)) {
-          const [activedCookie, blankCookie] = await ccauth(
-            userData.userId,
-            userData.userPwd
-          )
+          const [activedCookie, blankCookie] = await ccauth(userData.userId, userData.userPwd)
           resWrapper.setStatus(true).setData({ activedCookie, blankCookie })
         } else {
-          resWrapper
-            .setStatus(false)
-            .setMsg('Require only 2 post params: userName userPwd!')
+          resWrapper.setStatus(false).setMsg('Require only 2 post params: userName userPwd!')
         }
         Promise.resolve(resWrapper.json())
-      },
+      }
     },
     {
       path: '/ccAuth/signout',
@@ -39,18 +34,14 @@ const ccAuth: Plugin = {
         const resWrapper = new RoachRes(response)
         const userData = request.body
         if (hasProperties(userData, ['activedCookie', 'blankCookie'], true)) {
-          resWrapper.setStatus(
-            await ccsignout(userData.activedCookie, userData.blankCookie)
-          )
+          resWrapper.setStatus(await ccsignout(userData.activedCookie, userData.blankCookie))
         } else {
-          resWrapper
-            .setStatus(false)
-            .setMsg('Require only 2 post params: activedCookie blankCookie!')
+          resWrapper.setStatus(false).setMsg('Require only 2 post params: activedCookie blankCookie!')
         }
         Promise.resolve(resWrapper.json())
-      },
-    },
-  ],
+      }
+    }
+  ]
 }
 
 export default ccAuth

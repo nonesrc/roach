@@ -1,5 +1,5 @@
 import courseTab from './courseTab'
-import { Plugin } from '../../../types/pluginTypes'
+import type { Plugin } from '../../../types/pluginTypes'
 import RoachRes from '../../../router/resWrapper'
 
 // Dependent plugins
@@ -21,9 +21,9 @@ const eduSystem: Plugin = {
         await courseTab(cookie)
         Promise.resolve(resWrapper.json())
       },
-      method: 'post',
-    },
-  ],
+      method: 'post'
+    }
+  ]
 }
 
 export default eduSystem

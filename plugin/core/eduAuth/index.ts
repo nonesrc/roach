@@ -1,5 +1,5 @@
 import eduAuth from './eduAuth'
-import { Plugin } from '../../../types/pluginTypes'
+import type { Plugin } from '../../../types/pluginTypes'
 import RoachRes from '../../../router/resWrapper'
 import { hasProperties } from '../../../utils/helper'
 
@@ -11,7 +11,7 @@ const ssoauth: Plugin = {
   version: '1.0.0',
   type: 'core',
   dependencies: {
-    easyAuth: '1.0.0',
+    easyAuth: '1.0.0'
   },
   handlers: [
     {
@@ -27,9 +27,9 @@ const ssoauth: Plugin = {
         }
         Promise.resolve(resWrapper.json())
       },
-      method: 'post',
-    },
-  ],
+      method: 'post'
+    }
+  ]
 }
 
 export default ssoauth

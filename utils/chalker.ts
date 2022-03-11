@@ -10,5 +10,5 @@ export default {
   error: chalk.hex('#e74c3c'),
   errorBg: chalk.hex('#ffffff').bgRed,
   warning: chalk.hex('#d35400'),
-  warningBg: chalk.hex('#ffffff').bgYellow,
+  warningBg: chalk.hex('#ffffff').bgYellow
 }
