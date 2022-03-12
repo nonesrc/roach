@@ -3,11 +3,12 @@
     "target": "ESNext",
     "module": "commonjs",
     "rootDir": "./",
-    "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "Node",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "jsxImportSource": "preact"
   }
 }
