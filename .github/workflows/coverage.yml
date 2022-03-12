@@ -16,3 +16,4 @@ jobs:
           custom-title: Roach Unit Testing Reports
           threshold: 90
           skip-step: install
+          directory: ./coverage
