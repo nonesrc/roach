@@ -8,6 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "Node",
     "strict": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "allowJs": true
+  },
+  "include": ["plugin", "public", "router", "server", "utils", "config.ts", "roach.ts"]
 }

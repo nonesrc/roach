@@ -1,2 +1,5 @@
 node_modules
 eng.traineddata
+dist
+coverage
+.parcel-cache
