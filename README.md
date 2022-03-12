@@ -23,20 +23,25 @@ Roach让获取CUIT信息更为简单，只需提供入学生账号（目前）�
 
 ### 特点
 
-- [X] 使用Node+TypeScript编写。
+- [X] Node + TS。
 - [X] 提供插件系统，方便自行扩展。
 - [X] 源码简单，新手可读。
 
-### 运行
+### 开发
 
-开发（注意安装开发依赖）
 ``` javascript
 npm i
 npm run dev
 ```
 
-生产
-不介意可直接上TS，或者使用`npm run build`构建JS版本。
+### 生产
+
+``` javascript
+npm run build
+node .\dist\roach.js
+```
+
+也可以配合ts-node直接上TS。
 
 ### 提供功能（目前）
 
@@ -47,14 +52,10 @@ npm run dev
 - [X] sso单点登录认证 - ssoAuth
 - [X] 教务处认证 - eduAuth
 
-### 开发依赖
-
-1. nodemon
-2. ts-node
-3. commitizen
-
 ### 架构
+
 <img src="https://s3.bmp.ovh/imgs/2021/12/cc969ef1dff8fe2a.png" alt="drawing" style="width:80%;"/>
 
 ### 许可
+
 MIT.
