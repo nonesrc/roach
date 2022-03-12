@@ -1,5 +1,5 @@
 node_modules
 eng.traineddata
-output
+dist
 coverage
 .parcel-cache
