@@ -11,4 +11,3 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.SECRET_TOKEN }}
-          skip-step: all
