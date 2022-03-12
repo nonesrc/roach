@@ -1,15 +1,18 @@
-name: 'coverage'
+name: 'Roach Coverage'
 on:
   pull_request:
     branches:
-      - master
+      - plugin
       - main
 jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - run: npm ci
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.SECRET_TOKEN }}
-          test-script: npm run test
           custom-title: Roach Unit Testing Reports
+          threshold: 90
+          skip-step: install
