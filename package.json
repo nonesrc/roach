@@ -8,7 +8,7 @@
     "build": "tsc",
     "lint": "eslint **/*.ts",
     "fix": "eslint **/*.ts --fix",
-    "test": "jest",
+    "test": "jest --coverage",
     "test-dev": "jest --watchAll"
   },
   "keywords": [
