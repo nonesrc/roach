@@ -28,5 +28,5 @@ roachServer.listen(RoachConfig.serverPort, () => {
   console.clear()
   roachServer.roachPluginLoder.process()
   // eslint-disable-next-line
-  console.log(chalker.success.bold`Roach crawling on http://localhost:${RoachConfig.serverPort} `)
+  console.log(chalker.success.bold`Roach crawling on http://localhost:${RoachConfig.serverPort}`)
 })
