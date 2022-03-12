@@ -1,4 +1,3 @@
-// TEST CROVAGE
 module.exports = {
   env: {
     browser: true,
