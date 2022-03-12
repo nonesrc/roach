@@ -2,7 +2,6 @@ name: 'Roach Coverage'
 on:
   pull_request:
     branches:
-      - plugin
       - main
 jobs:
   coverage:
@@ -16,4 +15,3 @@ jobs:
           custom-title: Roach Unit Testing Reports
           threshold: 90
           skip-step: install
-          directory: ./coverage
