@@ -12,14 +12,12 @@ export function pathToRegex(path: string, exact = false) {
   )
 }
 
-// Check if obj own properties
 export function hasProperties(o: Object, p: string[] | string, only: boolean = false) {
   const props = typeof p === 'string' ? [p] : p
   if (only && props.length !== Object.keys(o).length) return false
   return props.every((P) => Object.prototype.hasOwnProperty.call(o, P))
 }
 
-// Yes, I need plugin records!!
 export function getPluginRecord(plugin: Plugin): PluginInfo {
   return {
     name: plugin.name,
@@ -28,7 +26,6 @@ export function getPluginRecord(plugin: Plugin): PluginInfo {
   }
 }
 
-// hash
 export function hashStr(str: string) {
   return createHash('md5').update(str).digest('hex')
 }

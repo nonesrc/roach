@@ -4,11 +4,11 @@
   "description": "CUIT APIS collections",
   "main": "./roach.ts",
   "scripts": {
-    "dev": "nodemon ./roach.ts",
+    "dev": "nodemon -r dotenv/config ./roach.ts",
     "build": "tsc",
     "lint": "eslint **/*.ts",
     "fix": "eslint **/*.ts --fix",
-    "test": "jest",
+    "test": "jest --coverage",
     "test-dev": "jest --watchAll"
   },
   "keywords": [
@@ -26,14 +26,12 @@
     "tesseract.js": "^2.1.5"
   },
   "devDependencies": {
-    "@parcel/reporter-bundle-analyzer": "^2.3.2",
-    "@parcel/transformer-typescript-tsc": "^2.3.2",
-    "@types/cheerio": "^0.22.31",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.21",
     "@types/sharp": "^0.30.0",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
+    "dotenv": "^16.0.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^16.1.1",
