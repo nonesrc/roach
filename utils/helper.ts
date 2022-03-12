@@ -27,7 +27,7 @@ export function getPluginRecord(plugin: Plugin): PluginInfo {
 }
 
 export function hashStr(str: string) {
-  return createHash('md5').update(str).digest('hex')
+  return str.length ? createHash('md5').update(str).digest('hex') : ''
 }
 
 // Get plugin hash
