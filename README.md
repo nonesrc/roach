@@ -38,7 +38,7 @@ npm run dev
 
 ``` javascript
 npm run build
-node ./dist/roach.js
+node .\dist\roach.js
 ```
 
 也可以配合ts-node直接上TS。
