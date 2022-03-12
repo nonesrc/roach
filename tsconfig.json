@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "allowJs": true
   },
-  "include": ["plugin", "public", "router", "server", "utils", "config.ts", "roach.ts"]
+  "include": ["plugin", "public", "router", "server", "utils", "test", "config.ts", "roach.ts"]
 }
