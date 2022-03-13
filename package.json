@@ -8,9 +8,17 @@
     "build": "tsc",
     "lint": "eslint **/*.ts",
     "fix": "eslint **/*.ts --fix",
+    "prettier": "prettier --write",
     "test": "jest --ci --coverage",
     "test-dev": "jest --watchAll",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --write",
+      "eslint **/*.ts --fix"
+    ]
   },
   "keywords": [
     "CUIT",
