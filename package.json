@@ -9,7 +9,8 @@
     "lint": "eslint **/*.ts",
     "fix": "eslint **/*.ts --fix",
     "test": "jest --ci --coverage",
-    "test-dev": "jest --watchAll"
+    "test-dev": "jest --watchAll",
+    "prepare": "husky install"
   },
   "keywords": [
     "CUIT",
@@ -39,7 +40,9 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
     "git-cz": "^4.8.0",
+    "husky": "^7.0.4",
     "jest": "^27.5.1",
+    "lint-staged": "^12.3.5",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
