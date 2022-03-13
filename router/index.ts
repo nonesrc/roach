@@ -1,4 +1,4 @@
-import Notifier from '../public/notifier'
+import Tip from '../public/tip'
 import HandlerStack from './handlerStack'
 import type { PluginInfo } from '../types/pluginTypes'
 import type { RoachRouterOptions, RouterHandlerType, RoachReqMethods } from '../types/routerTypes'
@@ -40,7 +40,7 @@ export default class RoachRouter {
           // Duplicate router handle
           // BUG 'use' Router did not inspected!
           if (this.routerCollections.has(`${method}@${hashStr(path)}`)) {
-            new Notifier('RoachError', `duplicate router: ${method} ~> ${path}, this route would not be loaded!`).error()
+            Tip.error('RoachError', `duplicate router: ${method} ~> ${path}, this route would not be loaded!`)
           } else {
             this.handlerStack.addHandler((requset, response, next) => {
               const { pathname } = requset.URL
@@ -52,7 +52,7 @@ export default class RoachRouter {
                 next()
               }
             }, 'CE')
-            new Notifier('*', `${method} ~> ${path} OK!`).info()
+            Tip.info('*', `${method} ~> ${path} OK!`)
           }
         }
       })
@@ -83,7 +83,7 @@ export default class RoachRouter {
       const regex = pathToRegex(access)
       // Duplicate 'use' router handle
       if (this.routerCollections.has(hashStr(access))) {
-        new Notifier('RoachError', `duplicate router in use: * ~> ${access}, this route would not be loaded!`).warn()
+        Tip.warn('RoachError', `duplicate router in use: * ~> ${access}, this route would not be loaded!`)
       } else {
         this.handlerStack.addHandler((request, response, next) => {
           const { pathname } = request.URL

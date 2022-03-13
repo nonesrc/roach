@@ -1,6 +1,6 @@
 import { request, get, IncomingMessage } from 'http'
 import cheerio from 'cheerio'
-import RoachError from '../../../public/errorHandle'
+import RoachError from '../../../public/error'
 
 // Request Cookies Data
 function authDataPacker(txtId: string, txtMM: string) {
@@ -96,19 +96,19 @@ export default async function ccAuth(userId: string, userPwd: string): Promise<[
                   if (___res.statusCode === 302 && ___res.headers.location === '/Jxgl/Xs/MainMenu.asp') {
                     resolve([activedCookie, blankCookie])
                   } else {
-                    reject(new RoachError('RoachError', `ccAuth: Error at cookie linking(___res): ${___res.headers.location}`))
+                    reject(new RoachError(`ccAuth: Error at cookie linking(___res): ${___res.headers.location}`))
                   }
                 })
               } else {
-                reject(new RoachError('RoachError', `ccAuth: Error at cookie linking(__res): ${__res.headers.location}`))
+                reject(new RoachError(`ccAuth: Error at cookie linking(__res): ${__res.headers.location}`))
               }
             })
           } else {
-            reject(new RoachError('RoachError', `ccAuth: Error at cookie linking(_res): ${_res.headers.location}`))
+            reject(new RoachError(`ccAuth: Error at cookie linking(_res): ${_res.headers.location}`))
           }
         })
       } else {
-        reject(new RoachError('RoachError', `ccAuth: Error at cookie linking(res): ${res.headers.location}`))
+        reject(new RoachError(`ccAuth: Error at cookie linking(res): ${res.headers.location}`))
       }
     })
   })
