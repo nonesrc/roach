@@ -321,7 +321,7 @@
           data: tank([]),
           getCourseData(userId, userPwd) {
             this.isLoading = true
-            fetch('http://localhost:8800/eduSystem/course/courseData', {
+            fetch('/eduSystem/course/courseData', {
               method: 'post',
               body: JSON.stringify({ userId, userPwd }),
               headers: {

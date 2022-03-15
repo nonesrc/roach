@@ -36,7 +36,6 @@ const eduSystem: Plugin = {
       dispatch: async (request, response) => {
         const filePath = path.resolve(__dirname, './resource/course.html')
         const stat = fs.statSync(filePath)
-        console.log(filePath)
         response.writeHead(200, {
           'Content-Type': 'text/html',
           'Content-Length': stat.size
