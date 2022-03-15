@@ -9,7 +9,7 @@ declare type RouterImplementation = (path: string, handle: (request: RoachReques
 
 const roachReqMethods: RoachReqMethods[] = ['get', 'post', 'put', 'delete']
 const defaultOptions: RoachRouterOptions = {
-  strict: false
+  strict: true
 }
 
 export default class RoachRouter {
@@ -33,14 +33,35 @@ export default class RoachRouter {
     this.options = options
     this.handlerStack = new HandlerStack()
     this.routerCollections = new Map()
+    this.init()
+  }
+
+  private init() {
+    // CORS
+    // TODO more options
+    this.handlerStack.addHandler((requset, response, next) => {
+      response.setHeader('Access-Control-Allow-Origin', '*')
+      if (requset.method!.toLowerCase() === 'options') {
+        response.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
+        response.setHeader('Access-Control-Allow-Credentials', 'true')
+        response.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+        response.setHeader('Content-Length', '0')
+        // 1 hour cache
+        response.setHeader('Access-Control-Max-Age', '216000')
+        response.statusCode = 204
+        response.end()
+      } else {
+        next()
+      }
+    }, 'PR')
+
     roachReqMethods.forEach((method) => {
       Object.defineProperty(this, method, {
         value: (path: string, handle: (requset: RoachRequest, response: RoachResponse) => void) => {
-          const regex = pathToRegex(path, options.strict)
+          const regex = pathToRegex(path, this.options.strict)
           // Duplicate router handle
-          // BUG 'use' Router did not inspected!
           if (this.routerCollections.has(`${method}@${hashStr(path)}`)) {
-            Tip.error('RoachError', `duplicate router: ${method} ~> ${path}, this route would not be loaded!`)
+            Tip.error(`duplicate router: ${method} ~> ${path}, this route would not be loaded!`, 'RoachError')
           } else {
             this.handlerStack.addHandler((requset, response, next) => {
               const { pathname } = requset.URL

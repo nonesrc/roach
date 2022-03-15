@@ -25,8 +25,8 @@ export default class RoachRes {
     return this
   }
 
-  public setStatus(status: boolean) {
-    this.options.status = status
+  public setStatus(status: any = false) {
+    this.options.status = Boolean(status)
     return this
   }
 
