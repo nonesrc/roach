@@ -1,6 +1,6 @@
 import ServerCTX from '../public/ctx'
-import RoachError from '../public/errorHandle'
-import Notifier from '../public/notifier'
+import RoachError from '../public/error'
+import Tip from '../public/tip'
 import RoachRouter from '../router'
 import type { Plugin, PluginHandler, PluginInfo } from '../types/pluginTypes'
 import { getPluginRecord, hashStr } from '../utils/helper'
@@ -27,7 +27,7 @@ export default class PluginLoder {
       if (!this.pluginParser.corePlugins.has(p.name) && !this.pluginParser.extraPlugins.has(p.name)) {
         this.pluginParser.compose(p)
       } else {
-        new Notifier('RoachWarn', `${p.name}@${p.version} already installed!`).warn()
+        Tip.warn('RoachWarn', `${p.name}@${p.version} already installed!`)
       }
     })
   }
@@ -35,7 +35,7 @@ export default class PluginLoder {
   public process() {
     const perLoadPlugin = new Map([...this.pluginParser.corePlugins, ...this.pluginParser.extraPlugins])
     perLoadPlugin.forEach((plugin, name) => {
-      new Notifier('RoachInfo', `${name}@${plugin.version} installing...`).info()
+      Tip.info(`${name}@${plugin.version} installing...`, 'RoachInfo')
       // Implements onCreate hook
       if (plugin.onCreate) {
         plugin.onCreate(this.serverCTX)
@@ -59,7 +59,7 @@ export default class PluginLoder {
       if (plugin.onLoaded) {
         plugin.onLoaded(this.serverCTX)
       }
-      new Notifier('*', `${name}@${plugin.version} is ready!`).success()
+      Tip.success(`${name}@${plugin.version} is ready!`, '*')
     })
   }
 
@@ -72,7 +72,7 @@ export default class PluginLoder {
     Object.entries(handlerRules).forEach(([key, rule]) => {
       const currentValue = handler[key as keyof typeof handlerRules]
       if (!rule(currentValue)) {
-        throw new RoachError('RoachError', `Handler's ${key} is invalid! Current value: ${currentValue}`)
+        throw new RoachError(`Handler's ${key} is invalid! Current value: ${currentValue}`)
       }
     })
   }

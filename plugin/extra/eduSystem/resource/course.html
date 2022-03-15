@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <title>Course</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'IBM Plex Mono', monospace;
+      }
+
+      body {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background: #353b48;
+        color: #e0e4e4;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      ul li {
+        list-style: none;
+      }
+
+      .container {
+        height: 100%;
+        width: 100%;
+        max-width: 1024px;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+
+      .banner {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .banner .title {
+        font-size: 4rem;
+      }
+
+      .banner .opts {
+        margin-left: auto;
+      }
+
+      .banner .opts span {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display: block;
+        padding: 8px 15px;
+        border: 2px solid #fff6e6;
+        cursor: pointer;
+      }
+
+      .banner .opts span:active {
+        background: #2a2f39;
+      }
+
+      .tableContainer {
+        position: relative;
+      }
+
+      .tableContainer .tableMask {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: #353b48;
+      }
+
+      .tableContainer .tableMask .optWrapper {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin: 0 auto;
+        padding-top: 100px;
+        width: 300px;
+        height: 100%;
+      }
+
+      .tableContainer .tableMask .optWrapper input {
+        margin-bottom: 10px;
+        outline: none;
+        padding: 5px;
+        width: 100%;
+        line-height: 25px;
+        border: 2px solid #fff6e6;
+        background: #353b48;
+        color: #e0e4e4;
+        font-size: 1.1rem;
+        font-family: 'IBM Plex Mono', monospace;
+      }
+
+      .tableContainer .tableMask .optWrapper .btnGroup {
+        margin-top: 20px;
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+      }
+
+      .tableContainer .tableMask .optWrapper .btnGroup span {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display: block;
+        padding: 8px 15px;
+        border: 2px solid #fff6e6;
+        cursor: pointer;
+      }
+
+      .tableContainer .tableMask .optWrapper .btnGroup span:active {
+        background: #2a2f39;
+      }
+
+      .tableContainer .tableMask .optWrapper .btnGroup span:first-child.loading:before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+        border-radius: 50%;
+        border: 3px solid white;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        -webkit-animation: loading 1s linear infinite;
+        animation: loading 1s linear infinite;
+      }
+
+      @-webkit-keyframes loading {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes loading {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      .tableContainer #courseTable {
+        background: #353b48;
+        border-spacing: 0;
+        table-layout: fixed;
+        width: 100%;
+        border: 2px solid #fff6e6;
+        border-width: 2px 0px 0px 2px;
+      }
+
+      .tableContainer #courseTable td,
+      .tableContainer #courseTable th {
+        margin: 0;
+        padding: 0;
+        height: 40px;
+        border: 2px solid #fff6e6;
+        border-width: 0px 2px 2px 0px;
+        text-align: center;
+      }
+
+      .tableContainer #courseTable td:first-child,
+      .tableContainer #courseTable th:first-child {
+        width: 80px;
+      }
+
+      .tableContainer #courseTable td .courseInfo:not(:last-child),
+      .tableContainer #courseTable th .courseInfo:not(:last-child) {
+        margin-bottom: 5px;
+        border-bottom: 2px solid #fff6e6;
+        border-bottom-style: dotted;
+      }
+
+      .tableContainer #courseTable th {
+        height: 30px;
+      }
+
+      .tableContainer #courseTable .courseInfo {
+        padding: 5px;
+        font-size: 0.9rem;
+      }
+
+      .tableContainer #courseTable .courseInfo .name {
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      .tableContainer #courseTable .courseActived {
+        background: #2a2f39;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" x-data>
+      <div class="banner">
+        <div class="title">课表</div>
+        <ul class="opts">
+          <li>
+            <span @click="$store.showSearch.toggle()" x-show="!$store.showSearch.show">查询</span>
+          </li>
+        </ul>
+      </div>
+      <div class="tableContainer">
+        <div class="tableMask" x-show="$store.showSearch.show" x-transition>
+          <div class="optWrapper" x-data="{userId: '', userPwd: ''}">
+            <input type="text" id="userId" placeholder="学号" x-model="userId" autocomplete="off" />
+            <input type="password" id="userPwd" placeholder="密码" x-model="userPwd" autocomplete="off" />
+            <div class="btnGroup">
+              <span :class="{loading:$store.courseMap.isLoading}" @click="$store.courseMap.getCourseData(userId, userPwd)">查询</span>
+              <span @click="$store.showSearch.toggle()">取消</span>
+            </div>
+          </div>
+        </div>
+        <table id="courseTable">
+          <thead>
+            <tr x-data="{ days: ['一', '二', '三', '四', '五', '六', '天'] }">
+              <th>节次/周次</th>
+              <template x-for="day in days">
+                <th x-text="`星期${day}`"></th>
+              </template>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-data="{ords: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一']}" x-for="(ord, rowIndex) in ords">
+              <tr>
+                <td x-text="`第${ord}节`"></td>
+                <template x-for="a in [0, 1, 2, 3, 4, 5, 6]">
+                  <template x-if="(rowIndex + 1) % 2 === 0 ? !$store.courseMap.data.has((rowIndex - 1) * 7 + a) : true">
+                    <td
+                      :rowspan="$store.courseMap.data.has(rowIndex * 7 + a)? 2 : 1"
+                      :class="{courseActived: $store.courseMap.data.has(rowIndex * 7 + a)}"
+                    >
+                      <template x-for="course in $store.courseMap.data.get(rowIndex * 7 + a) || []">
+                        <div class="courseInfo">
+                          <div class="name" x-text="course.name"></div>
+                          <div class="teacher" x-text="`${course.teacher}(${course.room})`"></div>
+                          <div class="week" x-text="`${course.startWeek}-${course.endWeek}周`"></div>
+                        </div>
+                      </template>
+                    </td>
+                  </template>
+                </template>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      function tank(courses) {
+        const courseMap = new Map()
+        courses.forEach((c) => {
+          const { activated, ...metas } = c
+          activated.forEach((a) => {
+            const { startWeek, endWeek, col, row } = a
+            const index = row * 7 + col
+            if (courseMap.has(index)) {
+              courseMap.get(index).push({
+                ...metas,
+                startWeek,
+                endWeek
+              })
+            } else {
+              courseMap.set(index, [{ ...metas, startWeek, endWeek }])
+            }
+          })
+        })
+        return courseMap
+      }
+
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('showSearch', {
+          show: false,
+          toggle() {
+            console.log(this.show)
+            this.show = !this.show
+          }
+        })
+        Alpine.store('courseMap', {
+          isLoading: false,
+          data: tank([]),
+          getCourseData(userId, userPwd) {
+            this.isLoading = true
+            fetch('/eduSystem/course/courseData', {
+              method: 'post',
+              body: JSON.stringify({ userId, userPwd }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+              .then((res) => {
+                res.json().then(({ data }) => {
+                  if (data) {
+                    console.log(data)
+                    this.data = tank(data)
+                    Alpine.store('showSearch').show = false
+                  }
+                })
+              })
+              .finally(() => (this.isLoading = false))
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

@@ -1,4 +1,5 @@
-import RoachError from '../public/errorHandle'
+import RoachError from '../public/error'
+import Tip from '../public/tip'
 import type { Plugin, PluginComposed } from '../types/pluginTypes'
 import { pluginHash } from '../utils/helper'
 
@@ -16,7 +17,7 @@ export default class PluginParser {
     try {
       PluginParser.pluginInfoChecker(plugin)
     } catch (error) {
-      ;(error as RoachError).notify()
+      Tip.error((error as RoachError).message)
       return
     }
     plugin.type = plugin.type || 'extra'
@@ -60,7 +61,7 @@ export default class PluginParser {
     Object.entries(pluginRules).forEach(([key, rule]) => {
       const currentValue = plugin[key as keyof typeof pluginRules]
       if (!rule(currentValue)) {
-        throw new RoachError('RoachError', `${plugin.name}'s ${key} is invalid!`)
+        throw new RoachError(`${plugin.name}'s ${key} is invalid!`)
       }
     })
   }
