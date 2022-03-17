@@ -1,5 +1,5 @@
 import { request, get, IncomingMessage } from 'http'
-import cheerio from 'cheerio'
+import { load } from 'cheerio'
 import RoachError from '../../../public/error'
 
 // Request Cookies Data
@@ -60,13 +60,13 @@ function getBlankCookie(): Promise<[string, string]> {
         const chunks: Buffer[] = []
         res.on('data', (chunk) => chunks.push(chunk))
         res.on('end', () => {
-          const html = cheerio.load(Buffer.concat(chunks).toString())
+          const html = load(Buffer.concat(chunks).toString())
           const cookie = resolveCookie(res)
           const refreshURL = html('meta[http-equiv="refresh"]').attr().content.slice(6)
           if (/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/.test(refreshURL) && cookie) {
             resolve([cookie, refreshURL])
           } else {
-            resolve(['', ''])
+            throw new RoachError(`ccAuth get blank cookie fail`)
           }
         })
       }

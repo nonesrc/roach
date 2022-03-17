@@ -11,8 +11,11 @@ export type CourseTab = {
   code: string
   name: string
   num: string
-  room: string
-  weekCode: string
-  col: string
-  row: string
+  activities: {
+    room: string
+    startWeek: number
+    endWeek: number
+    rule: string
+    coordinates: [number, number][]
+  }[]
 }

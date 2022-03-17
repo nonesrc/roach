@@ -63,47 +63,60 @@ export default async function getCourseTable(cookie: string): Promise<{ courseLi
             return [...courseListMap.values()]
           },
           get courseTab() {
-            const courseTabMap: Map<string, any> = new Map()
-            const resolveWeeks = (w: string) => ({ startWeek: w.indexOf('1'), endWeek: w.lastIndexOf('1') })
-            tableBody
-              .match(/TaskActivity\(.+\s+.+;/g)!
-              .map(
-                (c) =>
-                  /TaskActivity\(.*,"\d+\((?<code>.+)\..+","(?<name>.+)","(?<num>.+)","(?<room>.+)","(?<weekCode>\d+)".*\);\s+.+=(?<col>\d+).+(?<row>\d+)/.exec(
-                    c
-                  )!.groups
-              )
-              .forEach((c) => {
-                const courseCode = c!.code
-                const { name, room, weekCode, col, row } = c!
-                if (!courseTabMap.has(courseCode)) {
-                  const { name: caseName, ...meta } = courseListMap.get(courseCode)!
-                  courseTabMap.set(courseCode, {
-                    ...meta,
-                    name,
-                    room,
-                    activated: [
-                      {
-                        ...resolveWeeks(weekCode),
-                        col: +col,
-                        row: +row
-                      }
-                    ]
-                  })
-                } else {
-                  courseTabMap.get(courseCode).activated.push({
-                    ...resolveWeeks(weekCode),
-                    col: +col,
-                    row: +row
-                  })
+            const resolveWeeks = (weekCode: string) => {
+              const startWeek = weekCode.indexOf('1')
+              const endWeek = weekCode.lastIndexOf('1')
+              const nextWeekStatus = weekCode[startWeek + 1] || '1'
+              const rule = nextWeekStatus === '1' ? '全' : startWeek % 2 === 0 ? '双' : '单'
+              return {
+                startWeek,
+                endWeek,
+                rule
+              }
+            }
+            const resolveCoordinates = (coordinates: string) => {
+              const locationArr = []
+              const numArr = coordinates.match(/(\d+)(?=\*)|(?<=\+)(\d)/g)?.map((numStr) => parseInt(numStr, 10))
+              if (numArr) {
+                while (numArr.length) {
+                  locationArr.push(numArr.splice(0, 2))
                 }
-              })
-            return [...courseTabMap.values()]
+              }
+              return locationArr as [number, number][]
+            }
+            const resolveCourseGroup = (tableString: string) => {
+              const courseTabMap: Map<string, any> = new Map()
+              let course
+              const courseRegExp =
+                /TaskActivity\(.*,"\d+\((?<code>.+)\..+","(?<name>.+)","(?<num>.+)","(?<room>.+)","(?<weekCode>\d+)".*\);(?<coordinates>[\d\D]*?)var/g
+              while ((course = courseRegExp.exec(tableString)) !== null) {
+                if (course.groups) {
+                  const { code, room, weekCode, coordinates, ...courseTabMetas } = course.groups
+                  const activity = {
+                    room,
+                    coordinates: resolveCoordinates(coordinates),
+                    ...resolveWeeks(weekCode)
+                  }
+                  if (courseTabMap.has(code)) {
+                    courseTabMap.get(code).activities.push(activity)
+                  } else {
+                    const { name, ...courseListMetas } = courseListMap.get(code)!
+                    courseTabMap.set(code, {
+                      ...courseTabMetas,
+                      ...courseListMetas,
+                      activities: [activity]
+                    })
+                  }
+                }
+              }
+              return courseTabMap
+            }
+            return [...resolveCourseGroup(tableBody).values()]
           }
         })
       })
     })
-    req.write(new URLSearchParams({ 'setting.kind': 'std', ids }).toString())
+    req.write(new URLSearchParams({ 'setting.kind': 'std', ids, 'semester.id': '106' }).toString())
     req.end()
   })
 }
