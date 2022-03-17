@@ -5,7 +5,7 @@ import easyAuth from '../easyAuth/easyAuth'
 
 const worker = createWorker({
   // eslint-disable-next-line
-  // logger: (m) => console.log(m)
+  logger: (m) => console.log(m)
 })
 
 function getCookie(easyCookie: string): Promise<string> {

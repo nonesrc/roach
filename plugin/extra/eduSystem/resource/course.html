@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="./demo.js"></script> -->
     <script src="//unpkg.com/alpinejs" defer></script>
+    <!-- <link rel="stylesheet" href="demo.css" /> -->
     <title>Course</title>
     <style>
       html,
@@ -207,8 +209,6 @@
       .tableContainer #courseTable td .courseInfo:not(:last-child),
       .tableContainer #courseTable th .courseInfo:not(:last-child) {
         margin-bottom: 5px;
-        border-bottom: 2px solid #fff6e6;
-        border-bottom-style: dotted;
       }
 
       .tableContainer #courseTable th {
@@ -265,9 +265,16 @@
               <tr>
                 <td x-text="`第${ord}节`"></td>
                 <template x-for="a in [0, 1, 2, 3, 4, 5, 6]">
-                  <template x-if="(rowIndex + 1) % 2 === 0 ? !$store.courseMap.data.has((rowIndex - 1) * 7 + a) : true">
+                  <template
+                    x-data="{
+                    get currentTabHash(){ return UniqueHashCode($store.courseMap.data.get(rowIndex * 7 + a))},
+                    get nextTabHash(){ return UniqueHashCode($store.courseMap.data.get((rowIndex + 1) * 7 + a))},
+                    get preTabHash(){ return UniqueHashCode($store.courseMap.data.get((rowIndex - 1) * 7 + a))},
+                  }"
+                    x-if="(rowIndex + 1) % 2 !== 0 ? true : currentTabHash === 0 ? true : !(currentTabHash === preTabHash)"
+                  >
                     <td
-                      :rowspan="$store.courseMap.data.has(rowIndex * 7 + a)? 2 : 1"
+                      :rowspan="currentTabHash === 0 ? 1 : currentTabHash === nextTabHash ? 2 : 1"
                       :class="{courseActived: $store.courseMap.data.has(rowIndex * 7 + a)}"
                     >
                       <template x-for="course in $store.courseMap.data.get(rowIndex * 7 + a) || []">
@@ -287,22 +294,38 @@
       </div>
     </div>
     <script>
+      function UniqueHashCode(obj) {
+        const str = obj ? obj.reduce((a, b) => [...a, ...Object.values(b)], []).join('') : ''
+        let hash = 0
+        if (str.length == 0) return hash
+        for (i = 0; i < str.length; i++) {
+          hash = (hash << 5) - hash + str.charCodeAt(i)
+          hash = hash & hash
+        }
+        return hash
+      }
+
       function tank(courses) {
         const courseMap = new Map()
         courses.forEach((c) => {
-          const { activated, ...metas } = c
-          activated.forEach((a) => {
-            const { startWeek, endWeek, col, row } = a
-            const index = row * 7 + col
-            if (courseMap.has(index)) {
-              courseMap.get(index).push({
-                ...metas,
+          const { activities, ...courseMetas } = c
+          activities.forEach((activity) => {
+            const { room, coordinates, startWeek, endWeek, rule } = activity
+            coordinates.forEach((coordinate) => {
+              const index = coordinate[1] * 7 + coordinate[0]
+              const course = {
+                ...courseMetas,
+                room,
                 startWeek,
-                endWeek
-              })
-            } else {
-              courseMap.set(index, [{ ...metas, startWeek, endWeek }])
-            }
+                endWeek,
+                rule
+              }
+              if (courseMap.has(index)) {
+                courseMap.get(index).push(course)
+              } else {
+                courseMap.set(index, [course])
+              }
+            })
           })
         })
         return courseMap
@@ -331,7 +354,6 @@
               .then((res) => {
                 res.json().then(({ data }) => {
                   if (data) {
-                    console.log(data)
                     this.data = tank(data)
                     Alpine.store('showSearch').show = false
                   }
