@@ -6,7 +6,7 @@ import type { Plugin, PluginHandler, PluginInfo } from '../types/pluginTypes'
 import { getPluginRecord, hashStr } from '../utils/helper'
 import PluginParser from './parser'
 
-export default class PluginLoder {
+export default class PluginLoader {
   private roachRouter: RoachRouter
 
   private pluginParser: PluginParser
@@ -42,7 +42,7 @@ export default class PluginLoder {
       }
       plugin.handlers.forEach((handler) => {
         try {
-          PluginLoder.pluginHandlerChenker(handler)
+          PluginLoader.pluginHandlerChenker(handler)
           // Register handler
           this.roachRouter[handler.method](handler.path, handler.dispatch)
           // Record router

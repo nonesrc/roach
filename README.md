@@ -17,40 +17,40 @@
   <a href="https://github.com/nonesrc/roach/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/nonesrc/roach?style=for-the-badge"></a>
 </div>
 
-### 什么是Roach
+### 什么是 Roach
 
-Roach让获取CUIT信息更为简单，只需提供入学生账号（目前）就可以获取如**计算中心**，**教务处**等登录信息。
+Roach 让获取 CUIT 信息更为简单，只需提供入学生账号（目前）就可以获取如**计算中心**，**教务处**等登录信息。
 
 ### 特点
 
-- [X] Node + TS。
-- [X] 提供插件系统，方便自行扩展。
-- [X] 源码简单，新手可读。
+- [x] Node + TS。
+- [x] 提供插件系统，方便自行扩展。
+- [x] 源码简单，新手可读。
 
 ### 开发
 
-``` javascript
+```javascript
 npm i
 npm run dev
 ```
 
 ### 生产
 
-``` javascript
+```javascript
 npm run build
 node .\dist\roach.js
 ```
 
-也可以配合ts-node直接上TS。
+也可以配合 ts-node 直接上 TS。
 
 ### 提供功能（目前）
 
-所有功能基实现于外网认证方式，即通过webVPN账号登陆。
+所有功能基实现于外网认证方式，即通过 webVPN 账号登陆。
 
-- [X] 计算中心认证 - ccAuth
-- [X] webVPN 认证 - easyAuth
-- [X] sso单点登录认证 - ssoAuth
-- [X] 教务处认证 - eduAuth
+- [x] 计算中心认证 - ccAuth
+- [x] webVPN 认证 - easyAuth
+- [x] sso 单点登录认证 - ssoAuth
+- [x] 教务处认证 - eduAuth
 
 ### 架构
 

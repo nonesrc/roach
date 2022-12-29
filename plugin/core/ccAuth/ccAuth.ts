@@ -62,7 +62,7 @@ function getBlankCookie(): Promise<[string, string]> {
         res.on('end', () => {
           const html = load(Buffer.concat(chunks).toString())
           const cookie = resolveCookie(res)
-          const refreshURL = html('meta[http-equiv="refresh"]').attr().content.slice(6)
+          const refreshURL = html('meta[http-equiv="refresh"]').attr()!.content.slice(6)
           if (/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/.test(refreshURL) && cookie) {
             resolve([cookie, refreshURL])
           } else {
