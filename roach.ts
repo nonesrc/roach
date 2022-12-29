@@ -16,17 +16,17 @@ const roachServer = new RoachServer()
 // Install roachRouter middlewares
 roachServer.roachRouter.use(cookieParser)
 // Install plugins
-roachServer.roachPluginLoder.install(ccAuth)
-roachServer.roachPluginLoder.install(easyAuth)
-roachServer.roachPluginLoder.install(eduAuth)
-roachServer.roachPluginLoder.install(ssoAuth)
-roachServer.roachPluginLoder.install(eduSystem)
-roachServer.roachPluginLoder.install(healthMark)
+roachServer.roachPluginLoader.install(ccAuth)
+roachServer.roachPluginLoader.install(easyAuth)
+roachServer.roachPluginLoader.install(eduAuth)
+roachServer.roachPluginLoader.install(ssoAuth)
+roachServer.roachPluginLoader.install(eduSystem)
+roachServer.roachPluginLoader.install(healthMark)
 
 roachServer.listen(RoachConfig.serverPort, () => {
   // eslint-disable-next-line
   console.clear()
-  roachServer.roachPluginLoder.process()
+  roachServer.roachPluginLoader.process()
   // eslint-disable-next-line
   console.log(chalker.success.bold`Roach crawling on http://localhost:${RoachConfig.serverPort}`)
 })

@@ -41,10 +41,13 @@ async function getCaptchaCode(cookie: string): Promise<string> {
       .replace(/[\r\n]/g, '')
       .replace(/\s+/g, '')
       .slice(0, 4)
-  await worker.load()
-  await worker.loadLanguage('eng')
-  await worker.initialize('eng')
-  await worker.setParameters({
+
+  await (await worker).load()
+  await (await worker).loadLanguage('eng')
+  await (await worker).initialize('eng')
+  await (
+    await worker
+  ).setParameters({
     tessedit_char_whitelist: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     tessedit_ocr_engine_mode: OEM.TESSERACT_LSTM_COMBINED,
     tessjs_create_hocr: '0'
@@ -73,7 +76,7 @@ async function getCaptchaCode(cookie: string): Promise<string> {
           .toBuffer()
         const {
           data: { text }
-        } = await worker.recognize(imgBuffers)
+        } = await (await worker).recognize(imgBuffers)
         resolve(codeCover(text))
       })
     })

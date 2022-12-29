@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 
 export default {
-  slef: chalk,
+  self: chalk,
   bold: chalk.bold,
   success: chalk.hex('#2ecc71'),
   successBg: chalk.hex('#000000').bgGreen,
