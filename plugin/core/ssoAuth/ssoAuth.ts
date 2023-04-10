@@ -42,7 +42,6 @@ async function getCaptchaCode(cookie: string): Promise<string> {
       .replace(/\s+/g, '')
       .slice(0, 4)
 
-  await (await worker).load()
   await (await worker).loadLanguage('eng')
   await (await worker).initialize('eng')
   await (
