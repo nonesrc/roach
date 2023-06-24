@@ -75,15 +75,16 @@ export default async function getCourseTable(cookie: string): Promise<{ courseLi
               }
             }
             const resolveCoordinates = (coordinates: string) => {
-              const locationArr = []
+              const locationArr: [number, number][] = [] 
               const numArr = coordinates.match(/(\d+)(?=\*)|(?<=\+)(\d)/g)?.map((numStr) => parseInt(numStr, 10))
               if (numArr) {
                 while (numArr.length) {
-                  locationArr.push(numArr.splice(0, 2))
+                  locationArr.push(numArr.splice(0, 2) as [number, number]) 
                 }
               }
-              return locationArr as [number, number][]
+              return locationArr
             }
+            
             const resolveCourseGroup = (tableString: string) => {
               const courseTabMap: Map<string, any> = new Map()
               let course
