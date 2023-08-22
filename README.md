@@ -17,6 +17,8 @@
   <a href="https://github.com/nonesrc/roach/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/nonesrc/roach?style=for-the-badge"></a>
 </div>
 
+> 此版本代码不再跟新，开发将转移至next分支
+
 ### 什么是 Roach
 
 Roach 让获取 CUIT 信息更为简单，只需提供入学生账号（目前）就可以获取如**计算中心**，**教务处**等登录信息。
